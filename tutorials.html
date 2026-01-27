@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorials - Jontro-Tantrik Lab</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 12, 41, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 5%;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        nav a:hover {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            transform: translateY(-2px);
+        }
+
+        .hero-section {
+            padding: 8rem 10% 4rem;
+            text-align: center;
+        }
+
+        .hero-section h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero-section p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .filter-section {
+            padding: 2rem 10%;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.7rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .tutorials-section {
+            padding: 2rem 10% 5rem;
+        }
+
+        .tutorial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-top: 2rem;
+        }
+
+        .tutorial-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .tutorial-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .tutorial-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .tutorial-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .difficulty-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .beginner {
+            background: rgba(76, 175, 80, 0.3);
+            color: #4CAF50;
+        }
+
+        .intermediate {
+            background: rgba(255, 152, 0, 0.3);
+            color: #FF9800;
+        }
+
+        .advanced {
+            background: rgba(244, 67, 54, 0.3);
+            color: #F44336;
+        }
+
+        .tutorial-card h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .tutorial-description {
+            line-height: 1.7;
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+        }
+
+        .tutorial-meta {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .tutorial-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .tag {
+            padding: 0.3rem 0.8rem;
+            background: rgba(102, 126, 234, 0.2);
+            border-radius: 15px;
+            font-size: 0.85rem;
+            color: #f093fb;
+        }
+
+        .tutorial-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .tutorial-btn {
+            padding: 0.7rem 1.5rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 0.9rem;
+        }
+
+        .tutorial-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .whatsapp-btn {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+        }
+
+        .whatsapp-btn:hover {
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
+        }
+
+        footer {
+            background: rgba(15, 12, 41, 0.95);
+            padding: 2rem;
+            text-align: center;
+            margin-top: 5rem;
+        }
+
+        .back-home-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+
+        .back-home-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 2.5rem;
+            }
+            
+            .tutorial-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tutorials-section {
+                padding: 2rem 5% 5rem;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        /* Floating WhatsApp Button */
+        .floating-whatsapp {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4);
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 999;
+            text-decoration: none;
+            animation: pulse-whatsapp 2s infinite;
+        }
+
+        .floating-whatsapp:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.6);
+        }
+
+        @keyframes pulse-whatsapp {
+            0%, 100% {
+                box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4);
+            }
+            50% {
+                box-shadow: 0 5px 30px rgba(37, 211, 102, 0.8);
+            }
+        }
+
+        .tutorial-coming-soon {
+            text-align: center;
+            padding: 3rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            margin-top: 2rem;
+        }
+
+        .tutorial-coming-soon h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/8801822265260?text=Hello%20Jontro-Tantrik%20Lab!%20I'm%20interested%20in%20your%20tutorials." 
+       class="floating-whatsapp" 
+       target="_blank" 
+       title="Contact us on WhatsApp">
+        💬
+    </a>
+
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">JONTRO-TANTRIK LAB</a>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#products">Products</a></li>
+                <li><a href="index.html#projects">Projects</a></li>
+                <li><a href="tutorials.html">Tutorials</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero-section">
+        <h1>📚 Learning Tutorials</h1>
+        <p>Comprehensive guides and hands-on tutorials for embedded systems, IoT, robotics, and more</p>
+        <p style="font-size: 1rem; opacity: 0.7;">Expert training from Jontro-Tantrik Lab</p>
+    </section>
+
+    <div class="filter-section">
+        <button class="filter-btn active" data-filter="all">All Tutorials</button>
+        <button class="filter-btn" data-filter="beginner">Beginner</button>
+        <button class="filter-btn" data-filter="intermediate">Intermediate</button>
+        <button class="filter-btn" data-filter="advanced">Advanced</button>
+        <button class="filter-btn" data-filter="iot">IoT</button>
+        <button class="filter-btn" data-filter="robotics">Robotics</button>
+        <button class="filter-btn" data-filter="embedded">Embedded</button>
+    </div>
+
+    <section class="tutorials-section">
+        <div class="tutorial-grid">
+            <!-- Tutorial 1: ESP32 & IoT -->
+            <div class="tutorial-card" data-difficulty="beginner" data-category="iot embedded">
+                <div class="tutorial-header">
+                    <div class="tutorial-icon">🌐</div>
+                    <span class="difficulty-badge beginner">Beginner</span>
+                </div>
+                <h3>Getting Started with ESP32 & IoT</h3>
+                <p class="tutorial-description">Complete guide to ESP32 programming, WiFi connectivity, sensor interfacing, and cloud integration using ThingSpeak and Firebase. Perfect for beginners starting their IoT journey.</p>
+                
+                <div class="tutorial-meta">
+                    <span class="meta-item">⏱️ 6 Hours</span>
+                    <span class="meta-item">📹 15 Videos</span>
+                    <span class="meta-item">📄 PDF Guide</span>
+                </div>
+
+                <div class="tutorial-tags">
+                    <span class="tag">ESP32</span>
+                    <span class="tag">IoT</span>
+                    <span class="tag">WiFi</span>
+                    <span class="tag">Cloud</span>
+                </div>
+
+                <div class="tutorial-links">
+                    <a href="https://sites.google.com/view/mdanowarhossain" class="tutorial-btn" target="_blank">View Tutorial</a>
+                    <a href="https://wa.me/8801822265260?text=I'm%20interested%20in%20ESP32%20%26%20IoT%20tutorial" class="tutorial-btn whatsapp-btn" target="_blank">Enroll via WhatsApp</a>
+                </div>
+            </div>
+
+            <!-- Tutorial 2: MAX30102 Sensor -->
+            <div class="tutorial-card" data-difficulty="intermediate" data-category="iot embedded">
+                <div class="tutorial-header">
+                    <div class="tutorial-icon">💓</div>
+                    <span class="difficulty-badge intermediate">Intermediate</span>
+                </div>
+                <h3>MAX30102 Pulse Oximeter Integration</h3>
+                <p class="tutorial-description">Step-by-step tutorial on using MAX30102 sensor for heart rate and SpO2 measurement with Arduino/ESP32 for healthcare projects. Includes data visualization techniques.</p>
+                
+                <div class="tutorial-meta">
+                    <span class="meta-item">⏱️ 4 Hours</span>
+                    <span class="meta-item">📹 10 Videos</span>
+                    <span class="meta-item">💻 Source Code</span>
+                </div>
+
+                <div class="tutorial-tags">
+                    <span class="tag">Biomedical</span>
+                    <span class="tag">Sensors</span>
+                    <span class="tag">Arduino</span>
+                    <span class="tag">ESP32</span>
+                </div>
+
+                <div class="tutorial-links">
+                    <a href="https://sites.google.com/view/mdanowarhossain" class="tutorial-btn" target="_blank">View Tutorial</a>
+                    <a href="https://wa.me/8801822265260?text=I'm%20interested%20in%20MAX30102%20tutorial" class="tutorial-btn whatsapp-btn" target="_blank">Enroll via WhatsApp</a>
+                </div>
+            </div>
+
+            <!-- Tutorial 3: Voice Controlled Robot -->
+            <div class="tutorial-card" data-difficulty="beginner" data-category="robotics">
+                <div class="tutorial-header">
+                    <div class="tutorial-icon">🤖</div>
+                    <span class="difficulty-badge beginner">Beginner</span>
+                </div>
+                <h3>Voice Controlled Robot with Bluetooth</h3>
+                <p class="tutorial-description">Build an Android app-controlled robot using Arduino, HC-05 Bluetooth module, and MIT App Inventor for voice commands. Complete assembly and programming guide included.</p>
+                
+                <div class="tutorial-meta">
+                    <span class="meta-item">⏱️ 5 Hours</span>
+                    <span class="meta-item">📹 12 Videos</span>
+                    <span class="meta-item">📱 APK File</span>
+                </div>
+
+                <div class="tutorial-tags">
+                    <span class="tag">Robotics</span>
+                    <span class="tag">Arduino</span>
+                    <span class="tag">Bluetooth</span>
+                    <span class="tag">Mobile App</span>
+                </div>
+
+                <div class="tutorial-links">
+                    <a href="https://sites.google.com/view/mdanowarhossain" class="tutorial-btn" target="_blank">View Tutorial</a>
+                    <a href="https://wa.me/8801822265260?text=I'm%20interested%20in%20Voice%20Robot%20tutorial" class="tutorial-btn whatsapp-btn" target="_blank">Enroll via WhatsApp</a>
+                </div>
+            </div>
+
+            <!-- Tutorial 4: FreeRTOS -->
+            <div class="tutorial-card" data-difficulty="advanced" data-category="embedded">
+                <div class="tutorial-header">
+                    <div class="tutorial-icon">⚙️</div>
+                    <span class="difficulty-badge advanced">Advanced</span>
+                </div>
+                <h3>FreeRTOS for Embedded Systems</h3>
+                <p class="tutorial-description">Learn real-time operating system concepts, task scheduling, queue management, and multi-tasking on ESP32 using FreeRTOS. Advanced embedded programming techniques.</p>
+                
+                <div class="tutorial-meta">
+                    <span class="meta-item">⏱️ 8 Hours</span>
+                    <span class="meta-item">📹 20 Videos</span>
+                    <span class="meta-item">📚 E-Book</span>
+                </div>
+
+                <div class="tutorial-tags">
+                    <span class="tag">RTOS</span>
+                    <span class="tag">ESP32</span>
+                    <span class="tag">Multitasking</span>
+                    <span class="tag">Advanced</span>
+                </div>
+
+                <div class="tutorial-links">
+                    <a href="https://sites.google.com/view/mdanowarhossain" class="tutorial-btn" target="_blank">View Tutorial</a>
+                    <a href="https://wa.me/8801822265260?text=I'm%20interested%20in%20FreeRTOS%20tutorial" class="tutorial-btn whatsapp-btn" target="_blank">Enroll via WhatsApp</a>
+                </div>
+            </div>
+
+            <!-- Tutorial 5: Gas Sensors -->
+            <div class="tutorial-card" data-difficulty="intermediate" data-category="iot">
+                <div class="tutorial-header">
+                    <div class="tutorial-icon">🏭</div>
+                    <span class="difficulty-badge intermediate">Intermediate</span>
+                </div>
+                <h3>Multi-Sensor Gas Detection System</h3>
+                <p class="tutorial-description">Interface multiple MQ series gas sensors (MQ-2, MQ-5, MQ-7, MQ-135) with microcontrollers for industrial safety applications. Learn calibration and data interpretation.</p>
+                
+                <div class="tutorial-meta">
+                    <span class="meta-item">⏱️ 5 Hours</span>
+                    <span class="meta-item">📹 14 Videos</span>
+                    <span class="meta-item">📊 Calibration Data</span>
+                </div>
+
+                <div class="tutorial-tags">
+                    <span class="tag">Industrial IoT</span>
+                    <span class="tag">Safety</span>
+                    <span class="tag">Sensors</span>
+                    <span class="tag">MQ Series</span>
+                </div>
+
+                <div class="tutorial-links">
+                    <a href="https://sites.google.com/view/mdanowarhossain" class="tutorial-btn" target="_blank">View Tutorial</a>
+                    <a href="https://wa.me/8801822265260?text=I'm%20interested%20in%20Gas%20Sensor%20tutorial" class="tutorial-btn whatsapp-btn" target="_blank">Enroll via WhatsApp</a>
+                </div>
+            </div>
+
+            <!-- Tutorial 6: PID Control -->
+            <div class="tutorial-card" data-difficulty="intermediate" data-category="robotics">
+                <div class="tutorial-header">
+                    <div class="tutorial-icon">🎯</div>
+                    <span class="difficulty-badge intermediate">Intermediate</span>
+                </div>
+                <h3>PID Control for Line Following Robot</h3>
+                <p class="tutorial-description">Implement PID control algorithm for smooth line following with IR sensor array and motor speed control using PWM. Includes tuning guide and optimization techniques.</p>
+                
+                <div class="tutorial-meta">
+                    <span class="meta-item">⏱️ 6 Hours</span>
+                    <span class="meta-item">📹 16 Videos</span>
+                    <span class="meta-item">🔧 Tuning Tool</span>
+                </div>
+
+                <div class="tutorial-tags">
+                    <span class="tag">Robotics</span>
+                    <span class="tag">PID</span>
+                    <span class="tag">Control Systems</span>
+                    <span class="tag">Arduino</span>
+                </div>
+
+                <div class="tutorial-links">
+                    <a href="https://sites.google.com/view/mdanowarhossain" class="tutorial-btn" target="_blank">View Tutorial</a>
+                    <a href="https://wa.me/8801822265260?text=I'm%20interested%20in%20PID%20Control%20tutorial" class="tutorial-btn whatsapp-btn" target="_blank">Enroll via WhatsApp</a>
+                </div>
+            </div>
+
+            <!-- Tutorial 7: Weather Station -->
+            <div class="tutorial-card" data-difficulty="beginner" data-category="iot">
+                <div class="tutorial-header">
+                    <div class="tutorial-icon">🌦️</div>
+                    <span class="difficulty-badge beginner">Beginner</span>
+                </div>
+                <h3>DHT22 & BMP280 Weather Station</h3>
+                <p class="tutorial-description">Create a complete weather monitoring station with temperature, humidity, and barometric pressure sensors with cloud logging. Display data on LCD and mobile app.</p>
+                
+                <div class="tutorial-meta">
+                    <span class="meta-item">⏱️ 4 Hours</span>
+                    <span class="meta-item">📹 11 Videos</span>
+                    <span class="meta-item">📱 Mobile App</span>
+                </div>
+
+                <div class="tutorial-tags">
+                    <span class="tag">IoT</span>
+                    <span class="tag">Weather</span>
+                    <span class="tag">DHT22</span>
+                    <span class="tag">BMP280</span>
+                </div>
+
+                <div class="tutorial-links">
+                    <a href="https://sites.google.com/view/mdanowarhossain" class="tutorial-btn" target="_blank">View Tutorial</a>
+                    <a href="https://wa.me/8801822265260?text=I'm%20interested%20in%20Weather%20Station%20tutorial" class="tutorial-btn whatsapp-btn" target="_blank">Enroll via WhatsApp</a>
+                </div>
+            </div>
+
+            <!-- Tutorial 8: GSM Module -->
+            <div class="tutorial-card" data-difficulty="intermediate" data-category="iot">
+                <div class="tutorial-header">
+                    <div class="tutorial-icon">📱</div>
+                    <span class="difficulty-badge intermediate">Intermediate</span>
+                </div>
+                <h3>GSM Module SMS & Call Integration</h3>
+                <p class="tutorial-description">Send SMS alerts, make calls, and receive data using SIM800L GSM module with Arduino for IoT notification systems. Includes AT commands reference guide.</p>
+                
+                <div class="tutorial-meta">
+                    <span class="meta-item">⏱️ 5 Hours</span>
+                    <span class="meta-item">📹 13 Videos</span>
+                    <span class="meta-item">📋 AT Commands</span>
+                </div>
+
+                <div class="tutorial-tags">
+                    <span class="tag">Communication</span>
+                    <span class="tag">GSM</span>
+                    <span class="tag">SMS</span>
+                    <span class="tag">IoT</span>
+                </div>
+
+                <div class="tutorial-links">
+                    <a href="https://sites.google.com/view/mdanowarhossain" class="tutorial-btn" target="_blank">View Tutorial</a>
+                    <a href="https://wa.me/8801822265260?text=I'm%20interested%20in%20GSM%20Module%20tutorial" class="tutorial-btn whatsapp-btn" target="_blank">Enroll via WhatsApp</a>
+                </div>
+            </div>
+
+            <!-- Tutorial 9: ADXL345 -->
+            <div class="tutorial-card" data-difficulty="intermediate" data-category="robotics">
+                <div class="tutorial-header">
+                    <div class="tutorial-icon">📐</div>
+                    <span class="difficulty-badge intermediate">Intermediate</span>
+                </div>
+                <h3>ADXL345 Accelerometer Projects</h3>
+                <p class="tutorial-description">Interface ADXL345 3-axis accelerometer for tilt sensing, vibration detection, and motion tracking in robotics applications. Includes gesture recognition project.</p>
+                
+                <div class="tutorial-meta">
+                    <span class="meta-item">⏱️ 4 Hours</span>
+                    <span class="meta-item">📹 10 Videos</span>
+                    <span class="meta-item">🎮 Game Controller</span>
+                </div>
+
+                <div class="tutorial-tags">
+                    <span class="tag">Sensors</span>
+                    <span class="tag">IMU</span>
+                    <span class="tag">Robotics</span>
+                    <span class="tag">Motion</span>
+                </div>
+
+                <div class="tutorial-links">
+                    <a href="https://sites.google.com/view/mdanowarhossain" class="tutorial-btn" target="_blank">View Tutorial</a>
+                    <a href="https://wa.me/8801822265260?text=I'm%20interested%20in%20ADXL345%20tutorial" class="tutorial-btn whatsapp-btn" target="_blank">Enroll via WhatsApp</a>
+                </div>
+            </div>
+
+            <!-- Tutorial 10: Smart Agriculture -->
+            <div class="tutorial-card" data-difficulty="advanced" data-category="iot">
+                <div class="tutorial-header">
+                    <div class="tutorial-icon">🌱</div>
+                    <span class="difficulty-badge advanced">Advanced</span>
+                </div>
+                <h3>Smart Agriculture with NPK Sensor</h3>
+                <p class="tutorial-description">Build precision farming system with NPK, pH, moisture sensors for soil analysis and automated irrigation control. Complete hardware and software implementation.</p>
+                
+                <div class="tutorial-meta">
+                    <span class="meta-item">⏱️ 8 Hours</span>
+                    <span class="meta-item">📹 18 Videos</span>
+                    <span class="meta-item">📊 Dashboard</span>
+                </div>
+
+                <div class="tutorial-tags">
+                    <span class="tag">Agriculture</span>
+                    <span class="tag">IoT</span>
+                    <span class="tag">NPK</span>
+                    <span class="tag">Automation</span>
+                </div>
+
+                <div class="tutorial-links">
+                    <a href="https://sites.google.com/view/mdanowarhossain" class="tutorial-btn" target="_blank">View Tutorial</a>
+                    <a href="https://wa.me/8801822265260?text=I'm%20interested%20in%20Smart%20Agriculture%20tutorial" class="tutorial-btn whatsapp-btn" target="_blank">Enroll via WhatsApp</a>
+                </div>
+            </div>
+
+            <!-- Tutorial 11: ESP32-CAM -->
+            <div class="tutorial-card" data-difficulty="intermediate" data-category="iot">
+                <div class="tutorial-header">
+                    <div class="tutorial-icon">📷</div>
+                    <span class="difficulty-badge intermediate">Intermediate</span>
+                </div>
+                <h3>ESP32-CAM Live Streaming</h3>
+                <p class="tutorial-description">Set up ESP32-CAM for live video streaming, face detection, and image capture for surveillance and monitoring projects. Includes web server configuration.</p>
+                
+                <div class="tutorial-meta">
+                    <span class="meta-item">⏱️ 5 Hours</span>
+                    <span class="meta-item">📹 14 Videos</span>
+                    <span class="meta-item">🌐 Web Server</span>
+                </div>
+
+                <div class="tutorial-tags">
+                    <span class="tag">Computer Vision</span>
+                    <span class="tag">ESP32-CAM</span>
+                    <span class="tag">Streaming</span>
+                    <span class="tag">IoT</span>
+                </div>
+
+                <div class="tutorial-links">
+                    <a href="https://sites.google.com/view/mdanowarhossain" class="tutorial-btn" target="_blank">View Tutorial</a>
+                    <a href="https://wa.me/8801822265260?text=I'm%20interested%20in%20ESP32-CAM%20tutorial" class="tutorial-btn whatsapp-btn" target="_blank">Enroll via WhatsApp</a>
+                </div>
+            </div>
+
+            <!-- Tutorial 12: PCB Design -->
+            <div class="tutorial-card" data-difficulty="intermediate" data-category="embedded">
+                <div class="tutorial-header">
+                    <div class="tutorial-icon">🔌</div>
+                    <span class="difficulty-badge intermediate">Intermediate</span>
+                </div>
+                <h3>PCB Design with KiCAD & EasyEDA</h3>
+                <p class="tutorial-description">Professional PCB design tutorial covering schematic creation, component placement, routing, and Gerber file generation. Includes manufacturing guidelines.</p>
+                
+                <div class="tutorial-meta">
+                    <span class="meta-item">⏱️ 7 Hours</span>
+                    <span class="meta-item">📹 17 Videos</span>
+                    <span class="meta-item">📐 Templates</span>
+                </div>
+
+                <div class="tutorial-tags">
+                    <span class="tag">Hardware</span>
+                    <span class="tag">PCB</span>
+                    <span class="tag">KiCAD</span>
+                    <span class="tag">Design</span>
+                </div>
+
+                <div class="tutorial-links">
+                    <a href="https://sites.google.com/view/mdanowarhossain" class="tutorial-btn" target="_blank">View Tutorial</a>
+                    <a href="https://wa.me/8801822265260?text=I'm%20interested%20in%20PCB%20Design%20tutorial" class="tutorial-btn whatsapp-btn" target="_blank">Enroll via WhatsApp</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Coming Soon Section -->
+        <div class="tutorial-coming-soon">
+            <h3>More Tutorials Coming Soon!</h3>
+            <p style="opacity: 0.8; margin-bottom: 1rem;">We're constantly adding new tutorials on Arduino, Raspberry Pi, Machine Learning on Edge Devices, and more!</p>
+            <a href="https://wa.me/8801822265260?text=I'd%20like%20to%20request%20a%20specific%20tutorial%20topic" class="tutorial-btn whatsapp-btn" target="_blank">Request a Tutorial Topic</a>
+        </div>
+    </section>
+
+    <footer>
+        <a href="index.html" class="back-home-btn">← Back to Home</a>
+        <p style="margin-top: 2rem;">&copy; 2016-2026 Jontro-Tantrik Lab. All rights reserved.</p>
+        <p style="margin-top: 0.5rem; opacity: 0.8;">Expert Training in Embedded Systems & IoT</p>
+    </footer>
+
+    <script>
+        // Filter functionality
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const tutorialCards = document.querySelectorAll('.tutorial-card');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                this.classList.add('active');
+
+                const filterValue = this.getAttribute('data-filter');
+
+                tutorialCards.forEach(card => {
+                    if (filterValue === 'all') {
+                        card.style.display = 'block';
+                    } else {
+                        const difficulty = card.getAttribute('data-difficulty');
+                        const category = card.getAttribute('data-category');
+                        
+                        if (difficulty === filterValue || category.includes(filterValue)) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    }
+                });
+            });
+        });
+
+        // Animation on scroll
+        const cards = document.querySelectorAll('.tutorial-card');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.6s ease-out';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        cards.forEach(card => observer.observe(card));
+    </script>
+</body>
+</html>
