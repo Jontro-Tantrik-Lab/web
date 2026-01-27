@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publications - Jontro-Tantrik Lab</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+            overflow-x: hidden;
+        }
+        nav {
+            position: fixed; top: 0; width: 100%;
+            background: rgba(15, 12, 41, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000; padding: 1rem 5%;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        .nav-container {
+            display: flex; justify-content: space-between;
+            align-items: center; max-width: 1400px; margin: 0 auto;
+        }
+        .logo {
+            font-size: 1.5rem; font-weight: bold;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+        nav ul {
+            list-style: none; display: flex;
+            justify-content: center; gap: 2rem; flex-wrap: wrap;
+        }
+        nav a {
+            color: #fff; text-decoration: none;
+            font-weight: 500; transition: all 0.3s;
+            padding: 0.5rem 1rem; border-radius: 5px;
+        }
+        nav a:hover {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            transform: translateY(-2px);
+        }
+        .hero-section {
+            padding: 8rem 10% 4rem; text-align: center;
+        }
+        .hero-section h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+        .hero-section p { font-size: 1.3rem; opacity: 0.9; margin-bottom: 2rem; }
+        section { padding: 2rem 10% 5rem; }
+        .publication-item {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 4px solid #667eea;
+            transition: all 0.3s;
+        }
+        .publication-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+        .pub-title {
+            color: #667eea;
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            line-height: 1.6;
+        }
+        .pub-authors {
+            color: #f093fb;
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+        .pub-venue {
+            color: #fff;
+            font-style: italic;
+            margin-bottom: 1rem;
+            opacity: 0.7;
+        }
+        .pub-link {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.6rem 1.8rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+        .pub-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        footer {
+            background: rgba(15, 12, 41, 0.95);
+            padding: 2rem;
+            text-align: center;
+            margin-top: 5rem;
+        }
+        .back-home-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+        .back-home-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        .floating-whatsapp {
+            position: fixed; bottom: 30px; right: 30px;
+            width: 60px; height: 60px;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4);
+            cursor: pointer; transition: all 0.3s;
+            z-index: 999; text-decoration: none;
+            animation: pulse-whatsapp 2s infinite;
+        }
+        .floating-whatsapp:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.6);
+        }
+        @keyframes pulse-whatsapp {
+            0%, 100% { box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4); }
+            50% { box-shadow: 0 5px 30px rgba(37, 211, 102, 0.8); }
+        }
+        @media (max-width: 768px) {
+            .hero-section h1 { font-size: 2.5rem; }
+            section { padding: 2rem 5% 5rem; }
+            .nav-container { flex-direction: column; gap: 1rem; }
+        }
+        .scholar-links {
+            text-align: center;
+            margin: 3rem 0;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+        }
+        .scholar-links h3 { color: #667eea; margin-bottom: 1.5rem; }
+        .scholar-links a {
+            display: inline-block;
+            margin: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: all 0.3s;
+        }
+        .scholar-links a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <a href="https://wa.me/8801822265260?text=Hello%20Jontro-Tantrik%20Lab!%20I'm%20interested%20in%20research%20collaboration." 
+       class="floating-whatsapp" 
+       target="_blank" 
+       title="Contact us on WhatsApp">💬</a>
+
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">JONTRO-TANTRIK LAB</a>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="tutorials.html">Tutorials</a></li>
+                <li><a href="publications.html">Publications</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero-section">
+        <h1>📚 Research Publications</h1>
+        <p>Peer-reviewed research papers and conference proceedings</p>
+        <p style="font-size: 1rem; opacity: 0.7;">Contributing to the global scientific community</p>
+    </section>
+
+    <section>
+        <div class="scholar-links">
+            <h3>Academic Profiles</h3>
+            <a href="https://scholar.google.com/citations?user=yu_B3ggAAAAJ" target="_blank">🎓 Google Scholar</a>
+            <a href="https://www.researchgate.net/profile/Md_Anowar_Hossain3" target="_blank">🔬 ResearchGate</a>
+        </div>
+
+        <!-- Publications Section -->
+    <section id="publications">
+        <h2>Publications</h2>
+        
+        <div class="publication-item">
+            <div class="pub-title">Multipurpose Medical Assistant Robot
+(Docto-Bot) based on Internet of Things</div>
+            <div class="pub-authors">Md. Anowar Hossain, Md Ebrahim Hossain, Mohammad Anisur Rahaman</div>
+            <div class="pub-venue">International Journal of Electrical and Computer Engineering (IJECE),
+Vol 11, No 6: December 2021</div>
+            <a href="https://ijece.iaescore.com/index.php/IJECE/article/view/24225" class="pub-link" target="_blank">View Paper →</a>
+        </div>
+
+         <div class="publication-item">
+            <div class="pub-title">Advancing Assistive Robotics: Multi-Modal Navigation and Biophysical
+Monitoring for Next-Generation Wheelchairs</div>
+            <div class="pub-authors">Hossain, M.A., Chowdhury, E.H</div>
+            <div class="pub-venue">Engineering Science and Technology an International Journal
+(Under Review)</div>
+            <a href="https://doi.org/10.48550/arXiv.2601.02766" class="pub-link" target="_blank">View Paper →</a>
+        </div>
+
+         <div class="publication-item">
+            <div class="pub-title"> "Design and Implementation
+of an IoT Based Firefighting and Affected Area Monitoring Robot</div>
+            <div class="pub-authors">M. A. Hossain, H. S. Roy, M. F. K. Khondakar, M. H. Sarowar, and M. A. Hossain</div>
+            <div class="pub-venue">2021 2nd International Conference on Robotics,Electrical and Signal Processing Techniques (ICREST), 2021, pp. 552-556, doi:
+10.1109/ICREST51555.2021.9331064</div>
+            <a href="https://ieeexplore.ieee.org/document/9331064" class="pub-link" target="_blank">View Paper →</a>
+        </div>
+
+ <p style="text-align: center; margin-top: 2rem; opacity: 0.9;">
+            For complete list of publications, visit our 
+            <a href="https://scholar.google.com/citations?user=yu_B3ggAAAAJ" target="_blank" style="color: #667eea;">Google Scholar</a> and 
+            <a href="https://www.researchgate.net/profile/Md_Anowar_Hossain3" target="_blank" style="color: #667eea;">ResearchGate</a> profiles.
+        </p>
+        <!-- Include all other publications from original code -->
+    </section>
+
+    <footer>
+        <a href="index.html" class="back-home-btn">← Back to Home</a>
+        <p style="margin-top: 2rem;">&copy; 2016-2026 Jontro-Tantrik Lab. All rights reserved.</p>
+        <p style="margin-top: 0.5rem; opacity: 0.8;">Advancing Knowledge Through Research</p>
+    </footer>
+
+    <script>
+        const items = document.querySelectorAll('.publication-item');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeIn 0.6s ease-out';
+                }
+            });
+        }, { threshold: 0.1 });
+        items.forEach(item => observer.observe(item));
+    </script>
+</body>
+</html>

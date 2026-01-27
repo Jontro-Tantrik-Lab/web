@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - Jontro-Tantrik Lab</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 12, 41, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 5%;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        nav a:hover {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            transform: translateY(-2px);
+        }
+
+        .hero-section {
+            padding: 8rem 10% 4rem;
+            text-align: center;
+        }
+
+        .hero-section h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .hero-section p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        section {
+            padding: 2rem 10% 5rem;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-top: 2rem;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            border: 2px dashed rgba(102, 126, 234, 0.3);
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .product-card h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .product-price {
+            color: #f093fb;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+
+        .product-features {
+            text-align: left;
+            margin: 1.5rem 0;
+            padding-left: 1rem;
+        }
+
+        .product-features li {
+            margin: 0.7rem 0;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .whatsapp-button {
+            padding: 0.9rem 2.2rem;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            border: none;
+            color: white;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .whatsapp-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(37, 211, 102, 0.5);
+            background: linear-gradient(135deg, #128C7E, #25D366);
+        }
+
+        .whatsapp-button::before {
+            content: "📱 ";
+            margin-right: 0.5rem;
+        }
+
+        .custom-dev-section {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 3rem;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 15px;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .custom-dev-section h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+
+        .cta-button {
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            margin: 1rem 0.5rem;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        footer {
+            background: rgba(15, 12, 41, 0.95);
+            padding: 2rem;
+            text-align: center;
+            margin-top: 5rem;
+        }
+
+        .back-home-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+
+        .back-home-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Floating WhatsApp Button */
+        .floating-whatsapp {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4);
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 999;
+            text-decoration: none;
+            animation: pulse-whatsapp 2s infinite;
+        }
+
+        .floating-whatsapp:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.6);
+        }
+
+        @keyframes pulse-whatsapp {
+            0%, 100% {
+                box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4);
+            }
+            50% {
+                box-shadow: 0 5px 30px rgba(37, 211, 102, 0.8);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 2.5rem;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            section {
+                padding: 2rem 5% 5rem;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/8801822265260?text=Hello%20Jontro-Tantrik%20Lab!%20I'm%20interested%20in%20your%20products." 
+       class="floating-whatsapp" 
+       target="_blank" 
+       title="Contact us on WhatsApp">
+        💬
+    </a>
+
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">JONTRO-TANTRIK LAB</a>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="tutorials.html">Tutorials</a></li>
+                <li><a href="publications.html">Publications</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero-section">
+        <h1>🛍️ Our Products</h1>
+        <p>High-quality IoT devices and embedded systems for various applications</p>
+        <p style="font-size: 1rem; opacity: 0.7;">Designed and manufactured by Jontro-Tantrik Lab</p>
+    </section>
+
+    <section>
+        <div class="products-grid">
+            <div class="product-card">
+                <div class="product-image">
+                  <!--  <img src="YOUR_GITHUB_IMAGE_URL_HERE" alt="Health Monitoring Device" onerror="this.style.display='none'; this.parentElement.innerHTML='💓';">-->
+                     <img src="https://raw.githubusercontent.com/Jontro-Tantrik-Lab/web/main/heart.jpg">
+                </div>
+                <h3>Health Monitoring Device</h3>
+                <p>Wearable IoT device for continuous vital signs monitoring with cloud connectivity.</p>
+                <div class="product-price">৳12,500</div>
+                <ul class="product-features">
+                    <li>✓ Heart Rate & SpO2 Monitoring</li>
+                    <li>✓ Temperature Sensor (DS18B20)</li>
+                    <li>✓ Real-time Data Logging</li>
+                    <li>✓ Mobile App Integration</li>
+                    <li>✓ Battery Backup: 24 Hours</li>
+                </ul>
+                <a href="https://wa.me/8801822265260?text=Hello!%20I'm%20interested%20in%20the%20Health%20Monitoring%20Device%20(৳12,500)" 
+                   class="whatsapp-button" 
+                   target="_blank">Order via WhatsApp</a>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                     <!-- <img src="YOUR_GITHUB_IMAGE_URL_HERE" alt="Smart Agriculture Kit" onerror="this.style.display='none'; this.parentElement.innerHTML='🌱';">-->
+                      <img src="https://raw.githubusercontent.com/Jontro-Tantrik-Lab/web/main/agri.jpg">
+                </div>
+                <h3>Smart Agriculture Plant Monitoring System</h3>
+                <p>Complete IoT solution for precision farming with multi-sensor monitoring system.</p>
+                <div class="product-price">৳18,000</div>
+                <ul class="product-features">
+                    <li>✓ Soil Moisture Sensor</li>
+                    <li>✓ Temperature & Humidity (DHT22)</li>
+                     <li>✓ PH Sensor</li>
+                    <li>✓ Automated Irrigation Control</li>
+                    <li>✓ WiFi/GSM Connectivity</li>
+                    <li>✓ Mobile App Dashboard</li>
+                </ul>
+                <a href="https://wa.me/8801822265260?text=Hello!%20I'm%20interested%20in%20the%20Smart%20Agriculture%20Kit%20(৳18,000)" 
+                   class="whatsapp-button" 
+                   target="_blank">Order via WhatsApp</a>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="YOUR_GITHUB_IMAGE_URL_HERE" alt="Voice Control Robot" onerror="this.style.display='none'; this.parentElement.innerHTML='🤖';">
+                </div>
+                <h3>Voice Control Robot</h3>
+                <p>Educational robot kit with Bluetooth voice control and obstacle avoidance.</p>
+                <div class="product-price">৳8,500</div>
+                <ul class="product-features">
+                    <li>✓ Arduino Uno Based</li>
+                    <li>✓ Bluetooth HC-05 Module</li>
+                    <li>✓ Ultrasonic Obstacle Detection</li>
+                    <li>✓ Android App Included</li>
+                    <li>✓ Complete Assembly Guide</li>
+                </ul>
+                <a href="https://wa.me/8801822265260?text=Hello!%20I'm%20interested%20in%20the%20Voice%20Control%20Robot%20(৳8,500)" 
+                   class="whatsapp-button" 
+                   target="_blank">Order via WhatsApp</a>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="YOUR_GITHUB_IMAGE_URL_HERE" alt="Industrial IoT Monitor" onerror="this.style.display='none'; this.parentElement.innerHTML='🏭';">
+                </div>
+                <h3>Industrial IoT Monitor</h3>
+                <p>Multi-gas sensor system with ESP32-CAM for industrial safety monitoring.</p>
+                <div class="product-price">৳25,000</div>
+                <ul class="product-features">
+                    <li>✓ MQ-2, MQ-5, MQ-7, MQ-135 Sensors</li>
+                    <li>✓ ESP32-CAM Live Streaming</li>
+                    <li>✓ GSM Alert System</li>
+                    <li>✓ Cloud Data Logging</li>
+                    <li>✓ Web Dashboard Access</li>
+                </ul>
+                <a href="https://wa.me/8801822265260?text=Hello!%20I'm%20interested%20in%20the%20Industrial%20IoT%20Monitor%20(৳25,000)" 
+                   class="whatsapp-button" 
+                   target="_blank">Order via WhatsApp</a>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="YOUR_GITHUB_IMAGE_URL_HERE" alt="Biometric Access Control" onerror="this.style.display='none'; this.parentElement.innerHTML='🔐';">
+                </div>
+                <h3>Biometric Access Control</h3>
+                <p>Professional security system with fingerprint and RFID authentication.</p>
+                <div class="product-price">৳15,500</div>
+                <ul class="product-features">
+                    <li>✓ Fingerprint Sensor Module</li>
+                    <li>✓ RFID Card Reader (RC522)</li>
+                    <li>✓ GSM SMS Alerts</li>
+                    <li>✓ Solenoid Door Lock</li>
+                    <li>✓ Database Logging System</li>
+                </ul>
+                <a href="https://wa.me/8801822265260?text=Hello!%20I'm%20interested%20in%20the%20Biometric%20Access%20Control%20(৳15,500)" 
+                   class="whatsapp-button" 
+                   target="_blank">Order via WhatsApp</a>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="YOUR_GITHUB_IMAGE_URL_HERE" alt="Arduino Starter Kit" onerror="this.style.display='none'; this.parentElement.innerHTML='📚';">
+                </div>
+                <h3>Arduino Starter Kit</h3>
+                <p>Complete learning kit for beginners with 30+ components and project guide.</p>
+                <div class="product-price">৳5,500</div>
+                <ul class="product-features">
+                    <li>✓ Arduino Uno R3 Compatible</li>
+                    <li>✓ 30+ Sensors & Modules</li>
+                    <li>✓ Breadboard & Jumper Wires</li>
+                    <li>✓ 20 Project Tutorial Book</li>
+                    <li>✓ Online Video Tutorials</li>
+                </ul>
+                <a href="https://wa.me/8801822265260?text=Hello!%20I'm%20interested%20in%20the%20Arduino%20Starter%20Kit%20(৳5,500)" 
+                   class="whatsapp-button" 
+                   target="_blank">Order via WhatsApp</a>
+            </div>
+        </div>
+
+        <div class="custom-dev-section">
+            <h3>Custom Product Development</h3>
+            <p style="margin-bottom: 1rem; font-size: 1.1rem;">Need a custom IoT/Embedded solution for your specific requirements?</p>
+            <p style="opacity: 0.9;">We provide end-to-end custom development services from concept to production.</p>
+            <a href="https://wa.me/8801822265260?text=Hello!%20I'm%20interested%20in%20custom%20IoT/Embedded%20product%20development." 
+               class="whatsapp-button" 
+               target="_blank" 
+               style="margin: 1rem 0.5rem;">Contact on WhatsApp</a>
+            <a href="index.html#contact" class="cta-button" style="margin: 1rem 0.5rem;">Request Custom Quote</a>
+        </div>
+    </section>
+
+    <footer>
+        <a href="index.html" class="back-home-btn">← Back to Home</a>
+        <p style="margin-top: 2rem;">&copy; 2016-2026 Jontro-Tantrik Lab. All rights reserved.</p>
+        <p style="margin-top: 0.5rem; opacity: 0.8;">High-Quality IoT & Embedded Systems</p>
+    </footer>
+
+    <script>
+        // Animation on scroll
+        const cards = document.querySelectorAll('.product-card');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.6s ease-out';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        cards.forEach(card => observer.observe(card));
+    </script>
+</body>
+</html>
