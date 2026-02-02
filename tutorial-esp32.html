@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP32 & IoT Tutorial - Jontro-Tantrik Lab</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+            line-height: 1.8;
+        }
+        nav {
+            position: fixed; top: 0; width: 100%;
+            background: rgba(15, 12, 41, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000; padding: 1rem 5%;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        .nav-container {
+            display: flex; justify-content: space-between;
+            align-items: center; max-width: 1400px; margin: 0 auto;
+        }
+        .logo {
+            font-size: 1.5rem; font-weight: bold;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+        nav a {
+            color: #fff; text-decoration: none;
+            padding: 0.5rem 1rem; border-radius: 5px;
+            transition: all 0.3s;
+        }
+        nav a:hover {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 8rem 5% 5rem;
+        }
+        .tutorial-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 3rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+        }
+        .tutorial-header h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+        .tutorial-icon-large {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+        }
+        .tutorial-meta-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+        .meta-badge {
+            padding: 0.7rem 1.5rem;
+            background: rgba(102, 126, 234, 0.2);
+            border-radius: 25px;
+            font-size: 0.9rem;
+        }
+        .content-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .content-section h2 {
+            color: #667eea;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+        }
+        .content-section h3 {
+            color: #f093fb;
+            font-size: 1.5rem;
+            margin: 1.5rem 0 1rem;
+        }
+        .content-section ul, .content-section ol {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+        .content-section li {
+            margin: 0.7rem 0;
+        }
+        .module-card {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            border-left: 4px solid #667eea;
+        }
+        .module-card h4 {
+            color: #667eea;
+            margin-bottom: 0.7rem;
+            font-size: 1.2rem;
+        }
+        .code-block {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            overflow-x: auto;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+        }
+        .code-block code {
+            color: #00ff41;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        .cta-section {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+            padding: 3rem;
+            border-radius: 15px;
+            text-align: center;
+            margin: 3rem 0;
+            border: 2px solid rgba(102, 126, 234, 0.3);
+        }
+        .cta-button {
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            margin: 0.5rem;
+        }
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        .whatsapp-btn {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+        }
+        .requirements {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+        .requirement-item {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 1.2rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .requirement-item .icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        footer {
+            background: rgba(15, 12, 41, 0.95);
+            padding: 2rem;
+            text-align: center;
+            margin-top: 5rem;
+        }
+        .back-btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            text-decoration: none;
+            color: #fff;
+            transition: all 0.3s;
+        }
+        .back-btn:hover {
+            background: rgba(102, 126, 234, 0.3);
+        }
+        @media (max-width: 768px) {
+            .tutorial-header h1 { font-size: 2rem; }
+            .container { padding: 7rem 3% 3rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">JONTRO-TANTRIK LAB</a>
+            <a href="tutorials.html" class="back-btn">← Back to Tutorials</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Tutorial Header -->
+        <div class="tutorial-header">
+            <div class="tutorial-icon-large">🌐</div>
+            <h1>Getting Started with ESP32 & IoT</h1>
+            <p style="font-size: 1.2rem; opacity: 0.9; margin-top: 1rem;">Complete guide to ESP32 programming and cloud integration</p>
+            
+            <div class="tutorial-meta-info">
+                <span class="meta-badge">⏱️ 6 Hours</span>
+                <span class="meta-badge">📹 15 Videos</span>
+                <span class="meta-badge">📄 PDF Guide</span>
+                <span class="meta-badge">🏆 Beginner Level</span>
+            </div>
+        </div>
+
+        <!-- Overview Section -->
+        <div class="content-section">
+            <h2>📋 Tutorial Overview</h2>
+            <p>This comprehensive ESP32 & IoT tutorial is designed for beginners who want to master microcontroller programming and cloud integration. You'll learn everything from basic setup to building real-world IoT applications.</p>
+            <p style="margin-top: 1rem;">By the end of this course, you'll be able to create WiFi-enabled devices that communicate with cloud platforms, mobile apps, and other IoT systems.</p>
+        </div>
+
+        <!-- What You'll Learn -->
+        <div class="content-section">
+            <h2>🎯 What You'll Learn</h2>
+            <ul>
+                <li><strong>ESP32 Basics:</strong> Understanding ESP32 architecture, pinout, and capabilities</li>
+                <li><strong>Arduino IDE Setup:</strong> Installing and configuring development environment</li>
+                <li><strong>WiFi Connectivity:</strong> Connecting ESP32 to WiFi networks and internet</li>
+                <li><strong>Sensor Integration:</strong> Reading data from DHT22, BMP280, and other sensors</li>
+                <li><strong>Cloud Platforms:</strong> Sending data to ThingSpeak, Firebase, and Blynk</li>
+                <li><strong>Web Server:</strong> Creating web-based control interfaces</li>
+                <li><strong>MQTT Protocol:</strong> Implementing publish-subscribe messaging</li>
+                <li><strong>Mobile Apps:</strong> Controlling devices via smartphone applications</li>
+                <li><strong>OTA Updates:</strong> Wireless firmware updates</li>
+                <li><strong>Power Management:</strong> Deep sleep modes for battery operation</li>
+            </ul>
+        </div>
+
+        <!-- Course Modules -->
+        <div class="content-section">
+            <h2>📚 Course Modules</h2>
+            
+            <div class="module-card">
+                <h4>Module 1: Introduction to ESP32 (1 hour)</h4>
+                <ul>
+                    <li>What is ESP32 and why use it?</li>
+                    <li>ESP32 vs ESP8266 vs Arduino</li>
+                    <li>Understanding ESP32 development boards</li>
+                    <li>Installing USB drivers and Arduino IDE</li>
+                </ul>
+            </div>
+
+            <div class="module-card">
+                <h4>Module 2: Basic Programming (1.5 hours)</h4>
+                <ul>
+                    <li>Your first ESP32 program - LED Blink</li>
+                    <li>Digital input/output</li>
+                    <li>Analog reading with ADC</li>
+                    <li>PWM for LED dimming and motor control</li>
+                </ul>
+            </div>
+
+            <div class="module-card">
+                <h4>Module 3: WiFi & Network (1.5 hours)</h4>
+                <ul>
+                    <li>Connecting to WiFi networks</li>
+                    <li>Creating WiFi Access Point</li>
+                    <li>HTTP requests and API calls</li>
+                    <li>Simple web server creation</li>
+                </ul>
+            </div>
+
+            <div class="module-card">
+                <h4>Module 4: Sensor Integration (1 hour)</h4>
+                <ul>
+                    <li>DHT22 temperature & humidity sensor</li>
+                    <li>BMP280 pressure sensor</li>
+                    <li>Ultrasonic distance sensor</li>
+                    <li>I2C and SPI communication</li>
+                </ul>
+            </div>
+
+            <div class="module-card">
+                <h4>Module 5: Cloud Integration (1 hour)</h4>
+                <ul>
+                    <li>ThingSpeak setup and data logging</li>
+                    <li>Firebase real-time database</li>
+                    <li>Blynk mobile app integration</li>
+                    <li>MQTT broker configuration</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Requirements -->
+        <div class="content-section">
+            <h2>🛠️ Requirements</h2>
+            <div class="requirements">
+                <div class="requirement-item">
+                    <div class="icon">💻</div>
+                    <h4>Computer</h4>
+                    <p>Windows, Mac, or Linux PC with USB port</p>
+                </div>
+                <div class="requirement-item">
+                    <div class="icon">🔌</div>
+                    <h4>ESP32 Board</h4>
+                    <p>ESP32 DevKit or NodeMCU-32S</p>
+                </div>
+                <div class="requirement-item">
+                    <div class="icon">🌡️</div>
+                    <div class="icon">🌡️</div>
+                    <h4>Sensors (Optional)</h4>
+                    <p>DHT22, BMP280, LEDs, resistors</p>
+                </div>
+                <div class="requirement-item">
+                    <div class="icon">📱</div>
+                    <h4>Smartphone</h4>
+                    <p>Android or iOS for testing apps</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sample Code -->
+        <div class="content-section">
+            <h2>💻 Sample Code - WiFi Connection</h2>
+            <div class="code-block">
+<code>#include &lt;WiFi.h&gt;
+
+const char* ssid = "YOUR_WIFI_NAME";
+const char* password = "YOUR_PASSWORD";
+
+void setup() {
+  Serial.begin(115200);
+  
+  // Connect to WiFi
+  WiFi.begin(ssid, password);
+  
+  Serial.print("Connecting to WiFi");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  
+  Serial.println("");
+  Serial.println("WiFi connected!");
+  Serial.print("IP address: ");
+  Serial.println(WiFi.localIP());
+}
+
+void loop() {
+  // Your code here
+}
+</code>
+            </div>
+        </div>
+
+        <!-- Projects Included -->
+        <div class="content-section">
+            <h2>🚀 10+ Projects Included</h2>
+            <ol>
+                <li><strong>Smart LED Control:</strong> Control LEDs via web browser</li>
+                <li><strong>Weather Station:</strong> Monitor temperature, humidity, pressure</li>
+                <li><strong>Home Automation:</strong> Control appliances with smartphone</li>
+                <li><strong>Distance Monitor:</strong> Ultrasonic sensor with alerts</li>
+                <li><strong>Data Logger:</strong> Save sensor data to cloud</li>
+                <li><strong>Email Notifications:</strong> Send alerts via email</li>
+                <li><strong>Smart Garden:</strong> Automated plant watering system</li>
+                <li><strong>WiFi Scanner:</strong> Detect nearby WiFi networks</li>
+                <li><strong>Web Dashboard:</strong> Real-time data visualization</li>
+                <li><strong>Voice Control:</strong> Integration with Alexa/Google Home</li>
+            </ol>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <h2 style="color: #667eea; margin-bottom: 1rem;">Ready to Start Learning?</h2>
+            <p style="font-size: 1.1rem; margin-bottom: 2rem;">Join thousands of students who have mastered ESP32 & IoT</p>
+            <a href="https://wa.me/8801822265260?text=I%20want%20to%20enroll%20in%20ESP32%20IoT%20Tutorial" class="cta-button whatsapp-btn" target="_blank">📱 Enroll via WhatsApp</a>
+            <a href="index.html#contact" class="cta-button">📧 Contact Us</a>
+        </div>
+
+        <!-- Instructor Info -->
+        <div class="content-section">
+            <h2>👨‍🏫 Your Instructor</h2>
+            <h3>Md. Anowar Hossain</h3>
+            <p><strong>Founder & Principal Research Engineer, Jontro-Tantrik Lab</strong></p>
+            <p style="margin-top: 1rem;">With over 10 years of experience in embedded systems, IoT, and robotics, Anowar has trained hundreds of students and professionals. He holds a B.Sc. in Electrical & Electronics Engineering and has published multiple research papers in international journals.</p>
+            <p style="margin-top: 1rem;"><strong>Expertise:</strong> ESP32, Arduino, Raspberry Pi, IoT Cloud Platforms, Industrial Automation</p>
+        </div>
+
+        <!-- FAQ -->
+        <div class="content-section">
+            <h2>❓ Frequently Asked Questions</h2>
+            
+            <h3>Do I need programming experience?</h3>
+            <p>No! This course starts from basics. However, basic understanding of C/C++ will be helpful.</p>
+            
+            <h3>What hardware do I need?</h3>
+            <p>An ESP32 development board (₹500-800), USB cable, and optionally some sensors. Complete kit available for purchase.</p>
+            
+            <h3>How long does it take to complete?</h3>
+            <p>The course is 6 hours of video content. At your own pace, you can complete it in 1-2 weeks.</p>
+            
+            <h3>Do I get lifetime access?</h3>
+            <p>Yes! Once enrolled, you get lifetime access to all videos, PDFs, and code files.</p>
+            
+            <h3>Is support provided?</h3>
+            <p>Absolutely! You can ask questions via WhatsApp group and email support.</p>
+        </div>
+    </div>
+
+    <footer>
+        <a href="tutorials.html" class="back-btn">← Back to All Tutorials</a>
+        <p style="margin-top: 2rem;">&copy; 2016-2026 Jontro-Tantrik Lab. All rights reserved.</p>
+    </footer>
+</body>
+</html>
