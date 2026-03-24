@@ -1,0 +1,1511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IoT Sensor Systems for Beginners - Jontro-Tantrik Lab</title>
+  <meta name="description" content="Learn IoT sensor systems from scratch. Interface DHT11, LDR, and ultrasonic sensors with Arduino. Complete beginner guide with code, circuit diagrams, and hands-on projects." />
+  <meta name="keywords" content="IoT sensor tutorial, Arduino DHT11, LDR sensor, beginner IoT, Bangladesh IoT course, Jontro-Tantrik Lab, sensor interfacing" />
+  <meta property="og:title" content="IoT Sensor Systems for Beginners | Jontro-Tantrik Lab" />
+  <meta property="og:description" content="Master sensor interfacing with Arduino. DHT11, LDR, ultrasonic — complete beginner IoT course from Jontro-Tantrik Lab, Chittagong." />
+  <meta property="og:type" content="article" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --primary: #00d4ff;
+      --secondary: #7c3aed;
+      --accent: #f59e0b;
+      --success: #10b981;
+      --danger: #ef4444;
+      --dark: #0a0a0f;
+      --dark2: #111118;
+      --dark3: #1a1a25;
+      --dark4: #22222f;
+      --border: #2a2a3a;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --bright: #f8fafc;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--dark);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 16px;
+    }
+
+    /* ── NAV ── */
+    nav {
+      background: rgba(10,10,15,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 5%;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .nav-brand {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-back {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 14px;
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    .nav-back:hover { color: var(--primary); border-color: var(--primary); }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, var(--dark2) 0%, #0d0d1a 50%, #0a0a15 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 60px 5% 50px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -120px; right: -120px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(0,212,255,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: 20%;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(124,58,237,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-inner { max-width: 860px; position: relative; z-index: 1; }
+
+    .hero-icon {
+      width: 64px; height: 64px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 32px rgba(0,212,255,0.25);
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(16,185,129,0.12);
+      border: 1px solid rgba(16,185,129,0.3);
+      color: var(--success);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      font-size: clamp(24px, 4vw, 40px);
+      font-weight: 800;
+      color: var(--bright);
+      margin-bottom: 14px;
+      line-height: 1.2;
+    }
+
+    .hero h1 span { color: var(--primary); }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 17px;
+      max-width: 680px;
+      margin-bottom: 28px;
+    }
+
+    .hero-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .stat {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--dark3);
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .stat span { color: var(--text); font-weight: 500; }
+
+    /* ── LAYOUT ── */
+    .layout {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 48px 5%;
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 40px;
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { order: -1; }
+    }
+
+    /* ── CONTENT SECTIONS ── */
+    .section {
+      background: var(--dark2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      margin-bottom: 24px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-num {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .section h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--bright);
+    }
+
+    .section h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--primary);
+      margin: 24px 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section h3::before {
+      content: '';
+      width: 3px; height: 16px;
+      background: var(--primary);
+      border-radius: 2px;
+      display: block;
+    }
+
+    .section p { color: var(--text); margin-bottom: 14px; }
+
+    /* ── INFO BOX ── */
+    .info-box {
+      border-radius: 8px;
+      padding: 16px 18px;
+      margin: 16px 0;
+      border-left: 4px solid;
+      font-size: 14.5px;
+    }
+
+    .info-box.blue  { border-color: var(--primary); background: rgba(0,212,255,0.06); }
+    .info-box.yellow{ border-color: var(--accent);  background: rgba(245,158,11,0.06); }
+    .info-box.green { border-color: var(--success); background: rgba(16,185,129,0.06); }
+    .info-box.red   { border-color: var(--danger);  background: rgba(239,68,68,0.06); }
+
+    .info-box-title {
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .info-box.blue   .info-box-title { color: var(--primary); }
+    .info-box.yellow .info-box-title { color: var(--accent); }
+    .info-box.green  .info-box-title { color: var(--success); }
+    .info-box.red    .info-box-title { color: var(--danger); }
+
+    /* ── CODE ── */
+    .code-wrap {
+      background: #070710;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 18px 0;
+    }
+
+    .code-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      background: var(--dark3);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .code-lang {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-family: 'Courier New', monospace;
+    }
+
+    .code-file {
+      font-size: 12px;
+      color: var(--muted);
+      font-family: 'Courier New', monospace;
+    }
+
+    .code-copy {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 3px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .code-copy:hover { border-color: var(--primary); color: var(--primary); }
+
+    .code-wrap pre {
+      padding: 20px;
+      overflow-x: auto;
+      font-family: 'Courier New', 'Consolas', monospace;
+      font-size: 13.5px;
+      line-height: 1.75;
+    }
+
+    .kw  { color: #c792ea; }
+    .fn  { color: #82aaff; }
+    .str { color: #c3e88d; }
+    .num { color: #f78c6c; }
+    .cmt { color: #4a5568; font-style: italic; }
+    .var { color: #00d4ff; }
+    .pp  { color: #f59e0b; }
+
+    /* ── COMPONENT TABLE ── */
+    .comp-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      margin: 16px 0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .comp-table th {
+      background: var(--dark3);
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .comp-table td {
+      padding: 11px 16px;
+      border-bottom: 1px solid rgba(42,42,58,0.6);
+      color: var(--text);
+      vertical-align: middle;
+    }
+
+    .comp-table tr:last-child td { border-bottom: none; }
+    .comp-table tr:hover td { background: rgba(0,212,255,0.03); }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .badge-green { background: rgba(16,185,129,0.15); color: var(--success); }
+    .badge-blue  { background: rgba(0,212,255,0.12);  color: var(--primary); }
+
+    /* ── PINOUT ── */
+    .pinout-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 14px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+    }
+
+    @media (max-width: 600px) { .pinout-grid { grid-template-columns: 1fr; } }
+
+    .pin-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--dark3);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 14px;
+    }
+
+    .pin-label { color: var(--accent); font-weight: 700; }
+    .pin-val   { color: var(--text); }
+
+    /* ── STEPS ── */
+    .steps-list { counter-reset: steps; }
+
+    .step-item {
+      display: grid;
+      grid-template-columns: 50px 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .step-item::after {
+      content: '';
+      position: absolute;
+      left: 24px;
+      top: 52px;
+      bottom: -24px;
+      width: 1px;
+      background: var(--border);
+    }
+
+    .step-item:last-child::after { display: none; }
+
+    .step-circle {
+      width: 50px; height: 50px;
+      border: 2px solid var(--primary);
+      border-radius: 50%;
+      background: rgba(0,212,255,0.08);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--primary);
+      flex-shrink: 0;
+      counter-increment: steps;
+    }
+
+    .step-body { padding-top: 12px; }
+
+    .step-body h4 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--bright);
+      margin-bottom: 8px;
+    }
+
+    /* ── FLOW DIAGRAM ── */
+    .flow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0;
+      background: var(--dark3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 24px;
+      margin: 18px 0;
+      font-size: 13px;
+      font-family: 'Courier New', monospace;
+    }
+
+    .flow-box {
+      border: 1px solid;
+      border-radius: 6px;
+      padding: 10px 18px;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    .flow-box small { font-size: 10px; opacity: 0.7; display: block; margin-top: 2px; }
+    .flow-box.c { border-color: var(--primary); color: var(--primary); background: rgba(0,212,255,0.07); }
+    .flow-box.p { border-color: #f472b6; color: #f472b6; background: rgba(244,114,182,0.07); }
+    .flow-box.y { border-color: var(--accent); color: var(--accent); background: rgba(245,158,11,0.07); }
+    .flow-box.g { border-color: var(--success); color: var(--success); background: rgba(16,185,129,0.07); }
+
+    .flow-arrow {
+      color: #374151;
+      font-size: 18px;
+      padding: 0 8px;
+    }
+
+    /* ── QUIZ ── */
+    .quiz-block {
+      background: var(--dark3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 24px;
+      margin: 20px 0;
+    }
+
+    .quiz-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .quiz-q {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--bright);
+      margin-bottom: 16px;
+    }
+
+    .quiz-opts { display: flex; flex-direction: column; gap: 8px; }
+
+    .quiz-opt {
+      display: flex; align-items: center; gap: 12px;
+      padding: 11px 14px;
+      background: var(--dark4);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--text);
+      transition: all 0.18s;
+      user-select: none;
+    }
+
+    .quiz-opt:hover { border-color: var(--primary); color: var(--bright); }
+    .quiz-opt.correct { border-color: var(--success); background: rgba(16,185,129,0.1); color: var(--success); }
+    .quiz-opt.wrong   { border-color: var(--danger);  background: rgba(239,68,68,0.1);  color: var(--danger); }
+
+    .opt-key {
+      width: 24px; height: 24px;
+      border: 1px solid currentColor;
+      border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700;
+      font-family: 'Courier New', monospace;
+      flex-shrink: 0;
+      opacity: 0.6;
+    }
+
+    .quiz-result {
+      margin-top: 12px;
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .quiz-result.show { display: block; }
+    .quiz-result.ok   { background: rgba(16,185,129,0.1); color: var(--success); }
+    .quiz-result.no   { background: rgba(239,68,68,0.1);  color: var(--danger); }
+
+    /* ── PROJECTS GRID ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin: 16px 0;
+    }
+
+    @media (max-width: 600px) { .projects-grid { grid-template-columns: 1fr; } }
+
+    .project-card {
+      background: var(--dark3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      transition: border-color 0.2s;
+    }
+
+    .project-card:hover { border-color: var(--primary); }
+
+    .project-num {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: 0.1em;
+      margin-bottom: 6px;
+    }
+
+    .project-card h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--bright);
+      margin-bottom: 6px;
+    }
+
+    .project-card p {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    /* ── CTA ── */
+    .cta-block {
+      background: linear-gradient(135deg, rgba(0,212,255,0.08), rgba(124,58,237,0.08));
+      border: 1px solid rgba(0,212,255,0.2);
+      border-radius: 12px;
+      padding: 32px;
+      text-align: center;
+      margin: 24px 0;
+    }
+
+    .cta-block h3 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--bright);
+      margin-bottom: 10px;
+    }
+
+    .cta-block p {
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .cta-btns {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 12px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      background: var(--dark3);
+      transition: all 0.2s;
+    }
+
+    .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+
+    /* ── SIDEBAR ── */
+    .sidebar { position: sticky; top: 80px; }
+
+    .sidebar-card {
+      background: var(--dark2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .sidebar-head {
+      padding: 12px 18px;
+      background: var(--dark3);
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--primary);
+    }
+
+    .toc { list-style: none; padding: 8px 0; }
+
+    .toc li a {
+      display: block;
+      padding: 8px 18px;
+      font-size: 13.5px;
+      color: var(--muted);
+      text-decoration: none;
+      border-left: 2px solid transparent;
+      transition: all 0.15s;
+    }
+
+    .toc li a:hover,
+    .toc li.active a {
+      color: var(--primary);
+      border-left-color: var(--primary);
+      background: rgba(0,212,255,0.04);
+    }
+
+    .prereq { padding: 14px 18px; list-style: none; }
+
+    .prereq li {
+      font-size: 13.5px;
+      color: var(--text);
+      padding: 5px 0 5px 20px;
+      position: relative;
+    }
+
+    .prereq li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--success);
+      font-weight: 700;
+    }
+
+    .series-nav { padding: 14px 18px; }
+
+    .series-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      font-size: 13px;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .series-item:last-child { border-bottom: none; }
+    .series-item.current { color: var(--primary); }
+    .series-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); flex-shrink: 0; }
+    .series-item.current .series-dot { background: var(--primary); }
+    .series-item.done .series-dot { background: var(--success); }
+
+    /* ── FAQ ── */
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+      padding: 16px 0;
+    }
+
+    .faq-item:last-child { border-bottom: none; }
+
+    .faq-q {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--bright);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .faq-q::before {
+      content: 'Q';
+      background: rgba(0,212,255,0.12);
+      color: var(--primary);
+      border-radius: 4px;
+      padding: 1px 7px;
+      font-size: 11px;
+      font-weight: 800;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .faq-a {
+      font-size: 14px;
+      color: var(--muted);
+      padding-left: 32px;
+    }
+
+    /* ── INSTRUCTOR ── */
+    .instructor {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .instructor-avatar {
+      width: 70px; height: 70px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+
+    .instructor-name {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--bright);
+      margin-bottom: 4px;
+    }
+
+    .instructor-title {
+      font-size: 13px;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    /* ── READ PROGRESS ── */
+    #progress-bar {
+      position: fixed;
+      top: 0; left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary), #f472b6);
+      z-index: 999;
+      transition: width 0.1s;
+      box-shadow: 0 0 8px rgba(0,212,255,0.5);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark2);
+      border-top: 1px solid var(--border);
+      padding: 28px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: gap;
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .footer-copy {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .footer-next {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      background: var(--dark3);
+      border: 1px solid var(--border);
+      padding: 10px 18px;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .footer-next:hover { border-color: var(--primary); }
+    .footer-next-label { font-size: 11px; color: var(--muted); }
+    .footer-next-title { font-size: 14px; color: var(--primary); font-weight: 600; }
+
+    /* ── WHATSAPP FLOAT ── */
+    .wa-float {
+      position: fixed;
+      bottom: 24px; right: 24px;
+      width: 54px; height: 54px;
+      background: #25d366;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px;
+      text-decoration: none;
+      box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+      z-index: 90;
+      transition: transform 0.2s;
+    }
+
+    .wa-float:hover { transform: scale(1.1); }
+
+    /* ── UTILITY ── */
+    code {
+      background: var(--dark3);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2px 7px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<!-- ── NAV ── -->
+<nav>
+  <a class="nav-brand" href="https://jontro-tantrik-lab.github.io/web/index.html">JONTRO-TANTRIK LAB</a>
+  <a class="nav-back" href="https://jontro-tantrik-lab.github.io/web/tutorials.html">← Back to Tutorials</a>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-icon">📡</div>
+    <div class="hero-badge">✓ Beginner Friendly</div>
+    <h1>IoT <span>Sensor Systems</span> —<br>পড়ো তোমার চারপাশ</h1>
+    <p>DHT11, LDR, আর Ultrasonic সেন্সর দিয়ে Arduino প্রোগ্রাম করা শেখো — একদম শূন্য থেকে। বাস্তব কোড, সার্কিট, আর হাতে-কলমে প্রজেক্ট সহ।</p>
+    <div class="hero-stats">
+      <div class="stat">⏱️ <span>~45 min read</span></div>
+      <div class="stat">💻 <span>3 Live Code Examples</span></div>
+      <div class="stat">🔬 <span>5 Mini Projects</span></div>
+      <div class="stat">🏆 <span>Beginner Level</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── MAIN LAYOUT ── -->
+<div class="layout">
+<main>
+
+  <!-- §1 IoT কী -->
+  <div class="section" id="s1">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <h2>IoT ও সেন্সর — মূল ধারণা</h2>
+    </div>
+
+    <p>
+      <strong style="color:var(--primary)">IoT (Internet of Things)</strong> মানে হলো এমন একটি সিস্টেম যেখানে ডিভাইসগুলো নিজেরাই ডেটা সংগ্রহ করে, প্রসেস করে এবং ইন্টারনেটের মাধ্যমে শেয়ার করে। এই পুরো প্রক্রিয়ার শুরু হয় একটি সেন্সর থেকে।
+    </p>
+    <p>
+      সেন্সর হলো একটি মেশিনের "ইন্দ্রিয়"। DHT11 তাপমাত্রা অনুভব করে, LDR আলো দেখে, আর Ultrasonic সেন্সর দূরত্ব মাপে।
+    </p>
+
+    <div class="flow">
+      <div class="flow-box p">বাস্তব জগৎ<small>তাপ / আলো / দূরত্ব</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box c">সেন্সর<small>DHT11 / LDR / HC-SR04</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box y">Arduino<small>প্রসেস করে</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box g">আউটপুট<small>LCD / Cloud / Alert</small></div>
+    </div>
+
+    <div class="info-box blue">
+      <div class="info-box-title">💡 মূল সূত্র</div>
+      Sense → Process → Act — এই তিনটি ধাপ বুঝলেই যেকোনো IoT সিস্টেম ডিজাইন করা যায়।
+    </div>
+  </div>
+
+  <!-- §2 Components -->
+  <div class="section" id="s2">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <h2>প্রয়োজনীয় উপকরণ</h2>
+    </div>
+
+    <p>এই টিউটোরিয়ালের জন্য নিচের কম্পোনেন্টগুলো দরকার। সব মিলিয়ে খরচ ৳৬০০–৯০০ এর মধ্যে।</p>
+
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th>কম্পোনেন্ট</th>
+          <th>কাজ</th>
+          <th>দাম (আনুমানিক)</th>
+          <th>স্তর</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong style="color:var(--primary)">Arduino Uno R3</strong></td>
+          <td>মেইন কন্ট্রোলার</td>
+          <td>৳ ৩৫০–৫০০</td>
+          <td><span class="badge badge-green">সহজ</span></td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--primary)">DHT11 সেন্সর</strong></td>
+          <td>তাপমাত্রা ও আর্দ্রতা</td>
+          <td>৳ ৬০–১২০</td>
+          <td><span class="badge badge-green">সহজ</span></td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--primary)">LDR (ফটোরেজিস্টর)</strong></td>
+          <td>আলোর তীব্রতা</td>
+          <td>৳ ৫–১৫</td>
+          <td><span class="badge badge-green">সহজ</span></td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--primary)">HC-SR04</strong></td>
+          <td>আলট্রাসোনিক দূরত্ব</td>
+          <td>৳ ৮০–১৫০</td>
+          <td><span class="badge badge-green">সহজ</span></td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--primary)">Breadboard + Jumper Wire</strong></td>
+          <td>সার্কিট সংযোগ</td>
+          <td>৳ ১০০–১৮০</td>
+          <td><span class="badge badge-green">সহজ</span></td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--primary)">10kΩ রেজিস্টর ×2</strong></td>
+          <td>পুল-আপ / ভোল্টেজ ডিভাইডার</td>
+          <td>৳ ২–৫</td>
+          <td><span class="badge badge-green">সহজ</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="info-box yellow">
+      <div class="info-box-title">⚠️ কেনার টিপস</div>
+      Jontro-Tantrik Lab-এ Arduino Starter Kit পাওয়া যায় যেখানে উপরের সব কম্পোনেন্ট একসাথে আছে।
+      <a href="https://wa.me/8801822265260?text=Arduino Starter Kit দরকার" style="color:var(--accent);text-decoration:none;font-weight:600;"> WhatsApp-এ অর্ডার করো →</a>
+    </div>
+  </div>
+
+  <!-- §3 DHT11 -->
+  <div class="section" id="s3">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <h2>DHT11 — তাপমাত্রা ও আর্দ্রতা পড়া</h2>
+    </div>
+
+    <p>
+      DHT11 একটি ডিজিটাল সেন্সর যা একই সাথে তাপমাত্রা (0–50 °C) এবং আপেক্ষিক আর্দ্রতা (20–90%) পরিমাপ করে।
+      মাত্র তিনটি পিন — <strong style="color:var(--accent)">VCC, GND, DATA</strong> — এটাই এর সবচেয়ে বড় সুবিধা।
+    </p>
+
+    <h3>পিন কানেকশন</h3>
+    <div class="pinout-grid">
+      <div class="pin-row"><span class="pin-label">DHT11 VCC</span><span class="pin-val">→ Arduino 5V</span></div>
+      <div class="pin-row"><span class="pin-label">DHT11 GND</span><span class="pin-val">→ Arduino GND</span></div>
+      <div class="pin-row"><span class="pin-label">DHT11 DATA</span><span class="pin-val">→ Arduino Pin 2</span></div>
+      <div class="pin-row"><span class="pin-label">10kΩ (pull-up)</span><span class="pin-val">VCC ↔ DATA মাঝে</span></div>
+    </div>
+
+    <div class="info-box blue">
+      <div class="info-box-title">💡 Pull-up রেজিস্টর কেন দরকার?</div>
+      DHT11-এর DATA পিনটি ডিফল্টে "floating" থাকে, অর্থাৎ কোনো নির্দিষ্ট ভোল্টেজ থাকে না।
+      10kΩ রেজিস্টর সেটিকে HIGH (5V)-এ স্থির রাখে, ফলে ভুল রিডিং আসে না।
+    </div>
+
+    <h3>লাইব্রেরি ইনস্টল করো</h3>
+    <p>Arduino IDE-তে যাও: <code>Sketch → Include Library → Manage Libraries</code></p>
+    <p>সার্চ করো <code>DHT sensor library</code> by Adafruit এবং Install করো। সাথে <code>Adafruit Unified Sensor</code>-ও।</p>
+
+    <h3>কোড</h3>
+    <div class="code-wrap">
+      <div class="code-top">
+        <span class="code-lang">C++ · Arduino</span>
+        <span class="code-file">dht11_basic.ino</span>
+        <button class="code-copy" onclick="copyCode(this)">Copy</button>
+      </div>
+      <pre id="code-dht"><code><span class="cmt">// ══ Jontro-Tantrik Lab | IoT Sensor Series ══
+// Tutorial: DHT11 Temperature & Humidity Reading</span>
+
+<span class="kw">#include</span> <span class="str">&lt;DHT.h&gt;</span>
+
+<span class="kw">#define</span> <span class="pp">DHT_PIN</span>   <span class="num">2</span>        <span class="cmt">// DATA পিন</span>
+<span class="kw">#define</span> <span class="pp">DHT_TYPE</span>  <span class="fn">DHT11</span>    <span class="cmt">// সেন্সরের মডেল</span>
+
+<span class="fn">DHT</span> <span class="var">dht</span>(<span class="pp">DHT_PIN</span>, <span class="pp">DHT_TYPE</span>);
+
+<span class="kw">void</span> <span class="fn">setup</span>() {
+  <span class="var">Serial</span>.<span class="fn">begin</span>(<span class="num">9600</span>);
+  <span class="var">dht</span>.<span class="fn">begin</span>();
+  <span class="var">Serial</span>.<span class="fn">println</span>(<span class="str">"=== DHT11 Ready ==="</span>);
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="fn">delay</span>(<span class="num">2000</span>);  <span class="cmt">// DHT11-এর জন্য ২ সেকেন্ড বিরতি জরুরি</span>
+
+  <span class="kw">float</span> <span class="var">humidity</span>    = <span class="var">dht</span>.<span class="fn">readHumidity</span>();
+  <span class="kw">float</span> <span class="var">temperature</span> = <span class="var">dht</span>.<span class="fn">readTemperature</span>(); <span class="cmt">// ডিফল্ট সেলসিয়াস</span>
+
+  <span class="kw">if</span> (<span class="fn">isnan</span>(<span class="var">humidity</span>) || <span class="fn">isnan</span>(<span class="var">temperature</span>)) {
+    <span class="var">Serial</span>.<span class="fn">println</span>(<span class="str">"ERROR: Sensor read failed!"</span>);
+    <span class="kw">return</span>;
+  }
+
+  <span class="var">Serial</span>.<span class="fn">print</span>(<span class="str">"Temperature: "</span>);
+  <span class="var">Serial</span>.<span class="fn">print</span>(<span class="var">temperature</span>);
+  <span class="var">Serial</span>.<span class="fn">println</span>(<span class="str">" C"</span>);
+
+  <span class="var">Serial</span>.<span class="fn">print</span>(<span class="str">"Humidity:    "</span>);
+  <span class="var">Serial</span>.<span class="fn">print</span>(<span class="var">humidity</span>);
+  <span class="var">Serial</span>.<span class="fn">println</span>(<span class="str">" %"</span>);
+  <span class="var">Serial</span>.<span class="fn">println</span>(<span class="str">"--------------------"</span>);
+}</code></pre>
+    </div>
+
+    <p>Upload করার পর <kbd style="background:var(--dark3);border:1px solid var(--border);padding:2px 8px;border-radius:4px;font-family:'Courier New',monospace;font-size:12px;color:var(--primary)">Ctrl+Shift+M</kbd> চেপে Serial Monitor খোলো — প্রতি ২ সেকেন্ডে রিডিং দেখতে পাবে।</p>
+  </div>
+
+  <!-- §4 LDR -->
+  <div class="section" id="s4">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <h2>LDR — আলোর তীব্রতা পড়া</h2>
+    </div>
+
+    <p>
+      LDR (Light Dependent Resistor) একটি এনালগ সেন্সর। আলো বাড়লে রেজিস্ট্যান্স কমে, আলো কমলে রেজিস্ট্যান্স বাড়ে।
+      Arduino এর <code>analogRead()</code> ফাংশন <strong style="color:var(--primary)">0 থেকে 1023</strong> মানের মধ্যে ভ্যালু দেয়।
+    </p>
+
+    <h3>পিন কানেকশন (Voltage Divider)</h3>
+    <div class="pinout-grid">
+      <div class="pin-row"><span class="pin-label">LDR (এক পা)</span><span class="pin-val">→ Arduino 5V</span></div>
+      <div class="pin-row"><span class="pin-label">LDR (অন্য পা)</span><span class="pin-val">→ Arduino A0</span></div>
+      <div class="pin-row"><span class="pin-label">10kΩ রেজিস্টর</span><span class="pin-val">A0 ↔ GND-এর মাঝে</span></div>
+    </div>
+
+    <div class="info-box yellow">
+      <div class="info-box-title">⚠️ Voltage Divider সার্কিট</div>
+      LDR + 10kΩ রেজিস্টর মিলে একটি Voltage Divider তৈরি হয়। A0 পিনে যায় মাঝখানের junction-টি।
+      LDR-এর রেজিস্ট্যান্স পরিবর্তনের সাথে সাথে ওই junction-এর ভোল্টেজ পরিবর্তিত হয়।
+    </div>
+
+    <h3>কোড — অটো নাইট মোড LED</h3>
+    <div class="code-wrap">
+      <div class="code-top">
+        <span class="code-lang">C++ · Arduino</span>
+        <span class="code-file">ldr_night_mode.ino</span>
+        <button class="code-copy" onclick="copyCode(this)">Copy</button>
+      </div>
+      <pre><code><span class="cmt">// ══ Jontro-Tantrik Lab | LDR Auto Night Mode ══</span>
+
+<span class="kw">#define</span> <span class="pp">LDR_PIN</span>    <span class="num">A0</span>   <span class="cmt">// এনালগ পিন</span>
+<span class="kw">#define</span> <span class="pp">LED_PIN</span>    <span class="num">13</span>   <span class="cmt">// বিল্ট-ইন LED</span>
+<span class="kw">#define</span> <span class="pp">THRESHOLD</span>  <span class="num">400</span>  <span class="cmt">// ৪০০-এর নিচে = অন্ধকার</span>
+
+<span class="kw">void</span> <span class="fn">setup</span>() {
+  <span class="var">Serial</span>.<span class="fn">begin</span>(<span class="num">9600</span>);
+  <span class="fn">pinMode</span>(<span class="pp">LED_PIN</span>, <span class="fn">OUTPUT</span>);
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="kw">int</span> <span class="var">lightVal</span> = <span class="fn">analogRead</span>(<span class="pp">LDR_PIN</span>);
+
+  <span class="var">Serial</span>.<span class="fn">print</span>(<span class="str">"Light Level: "</span>);
+  <span class="var">Serial</span>.<span class="fn">println</span>(<span class="var">lightVal</span>);
+
+  <span class="kw">if</span> (<span class="var">lightVal</span> &lt; <span class="pp">THRESHOLD</span>) {
+    <span class="fn">digitalWrite</span>(<span class="pp">LED_PIN</span>, <span class="fn">HIGH</span>); <span class="cmt">// অন্ধকারে LED জ্বালাও</span>
+    <span class="var">Serial</span>.<span class="fn">println</span>(<span class="str">">> Night Mode: ON"</span>);
+  } <span class="kw">else</span> {
+    <span class="fn">digitalWrite</span>(<span class="pp">LED_PIN</span>, <span class="fn">LOW</span>);  <span class="cmt">// আলোয় LED নেভাও</span>
+    <span class="var">Serial</span>.<span class="fn">println</span>(<span class="str">">> Day Mode: OFF"</span>);
+  }
+
+  <span class="fn">delay</span>(<span class="num">500</span>);
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- §5 HC-SR04 -->
+  <div class="section" id="s5">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <h2>HC-SR04 — দূরত্ব পরিমাপ</h2>
+    </div>
+
+    <p>
+      HC-SR04 আলট্রাসোনিক তরঙ্গ ব্যবহার করে দূরত্ব মাপে। এটি একটি ultrasound pulse পাঠায় এবং
+      সেটি বাধা থেকে প্রতিফলিত হয়ে ফিরে আসতে কতক্ষণ লাগলো সেটি মাপে।
+      এই সময় থেকে দূরত্ব বের করা যায়: <strong style="color:var(--primary)">দূরত্ব = (সময় × শব্দের গতি) / 2</strong>
+    </p>
+
+    <h3>পিন কানেকশন</h3>
+    <div class="pinout-grid">
+      <div class="pin-row"><span class="pin-label">VCC</span><span class="pin-val">→ Arduino 5V</span></div>
+      <div class="pin-row"><span class="pin-label">GND</span><span class="pin-val">→ Arduino GND</span></div>
+      <div class="pin-row"><span class="pin-label">TRIG</span><span class="pin-val">→ Arduino Pin 9</span></div>
+      <div class="pin-row"><span class="pin-label">ECHO</span><span class="pin-val">→ Arduino Pin 10</span></div>
+    </div>
+
+    <h3>কোড</h3>
+    <div class="code-wrap">
+      <div class="code-top">
+        <span class="code-lang">C++ · Arduino</span>
+        <span class="code-file">ultrasonic_distance.ino</span>
+        <button class="code-copy" onclick="copyCode(this)">Copy</button>
+      </div>
+      <pre><code><span class="cmt">// ══ Jontro-Tantrik Lab | HC-SR04 Distance Sensor ══</span>
+
+<span class="kw">#define</span> <span class="pp">TRIG_PIN</span>  <span class="num">9</span>
+<span class="kw">#define</span> <span class="pp">ECHO_PIN</span>  <span class="num">10</span>
+
+<span class="kw">void</span> <span class="fn">setup</span>() {
+  <span class="var">Serial</span>.<span class="fn">begin</span>(<span class="num">9600</span>);
+  <span class="fn">pinMode</span>(<span class="pp">TRIG_PIN</span>, <span class="fn">OUTPUT</span>);
+  <span class="fn">pinMode</span>(<span class="pp">ECHO_PIN</span>, <span class="fn">INPUT</span>);
+}
+
+<span class="kw">long</span> <span class="fn">getDistance</span>() {
+  <span class="cmt">// TRIG পিনে ১০ মাইক্রোসেকেন্ডের pulse পাঠাও</span>
+  <span class="fn">digitalWrite</span>(<span class="pp">TRIG_PIN</span>, <span class="fn">LOW</span>);
+  <span class="fn">delayMicroseconds</span>(<span class="num">2</span>);
+  <span class="fn">digitalWrite</span>(<span class="pp">TRIG_PIN</span>, <span class="fn">HIGH</span>);
+  <span class="fn">delayMicroseconds</span>(<span class="num">10</span>);
+  <span class="fn">digitalWrite</span>(<span class="pp">TRIG_PIN</span>, <span class="fn">LOW</span>);
+
+  <span class="cmt">// ECHO পিনে pulse-এর সময় মাপো (microseconds)</span>
+  <span class="kw">long</span> <span class="var">duration</span> = <span class="fn">pulseIn</span>(<span class="pp">ECHO_PIN</span>, <span class="fn">HIGH</span>);
+
+  <span class="cmt">// দূরত্ব: (সময় × ০.০৩৪) / ২ = সেন্টিমিটার</span>
+  <span class="kw">return</span> (<span class="var">duration</span> * <span class="num">0.034</span>) / <span class="num">2</span>;
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="kw">long</span> <span class="var">dist</span> = <span class="fn">getDistance</span>();
+
+  <span class="var">Serial</span>.<span class="fn">print</span>(<span class="str">"Distance: "</span>);
+  <span class="var">Serial</span>.<span class="fn">print</span>(<span class="var">dist</span>);
+  <span class="var">Serial</span>.<span class="fn">println</span>(<span class="str">" cm"</span>);
+
+  <span class="kw">if</span> (<span class="var">dist</span> &lt; <span class="num">20</span>) {
+    <span class="var">Serial</span>.<span class="fn">println</span>(<span class="str">">> ALERT: Object too close!"</span>);
+  }
+
+  <span class="fn">delay</span>(<span class="num">200</span>);
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- §6 Combined -->
+  <div class="section" id="s6">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <h2>তিনটো একসাথে — Smart Room Monitor</h2>
+    </div>
+
+    <p>তিনটো সেন্সর একসাথে লাগিয়ে একটি সম্পূর্ণ "স্মার্ট রুম মনিটরিং" সিস্টেম তৈরি করি।</p>
+
+    <div class="code-wrap">
+      <div class="code-top">
+        <span class="code-lang">C++ · Arduino</span>
+        <span class="code-file">smart_room_monitor.ino</span>
+        <button class="code-copy" onclick="copyCode(this)">Copy</button>
+      </div>
+      <pre><code><span class="cmt">// ══ Jontro-Tantrik Lab | Smart Room Monitor ══
+// Sensors: DHT11 + LDR + HC-SR04</span>
+
+<span class="kw">#include</span> <span class="str">&lt;DHT.h&gt;</span>
+
+<span class="kw">#define</span> <span class="pp">DHT_PIN</span>   <span class="num">2</span>
+<span class="kw">#define</span> <span class="pp">DHT_TYPE</span>  <span class="fn">DHT11</span>
+<span class="kw">#define</span> <span class="pp">LDR_PIN</span>   <span class="num">A0</span>
+<span class="kw">#define</span> <span class="pp">TRIG_PIN</span>  <span class="num">9</span>
+<span class="kw">#define</span> <span class="pp">ECHO_PIN</span>  <span class="num">10</span>
+
+<span class="fn">DHT</span> <span class="var">dht</span>(<span class="pp">DHT_PIN</span>, <span class="pp">DHT_TYPE</span>);
+
+<span class="kw">long</span> <span class="fn">getDistance</span>() {
+  <span class="fn">digitalWrite</span>(<span class="pp">TRIG_PIN</span>, <span class="fn">LOW</span>);  <span class="fn">delayMicroseconds</span>(<span class="num">2</span>);
+  <span class="fn">digitalWrite</span>(<span class="pp">TRIG_PIN</span>, <span class="fn">HIGH</span>); <span class="fn">delayMicroseconds</span>(<span class="num">10</span>);
+  <span class="fn">digitalWrite</span>(<span class="pp">TRIG_PIN</span>, <span class="fn">LOW</span>);
+  <span class="kw">return</span> (<span class="fn">pulseIn</span>(<span class="pp">ECHO_PIN</span>, <span class="fn">HIGH</span>) * <span class="num">0.034</span>) / <span class="num">2</span>;
+}
+
+<span class="kw">void</span> <span class="fn">setup</span>() {
+  <span class="var">Serial</span>.<span class="fn">begin</span>(<span class="num">9600</span>);
+  <span class="var">dht</span>.<span class="fn">begin</span>();
+  <span class="fn">pinMode</span>(<span class="pp">TRIG_PIN</span>, <span class="fn">OUTPUT</span>);
+  <span class="fn">pinMode</span>(<span class="pp">ECHO_PIN</span>, <span class="fn">INPUT</span>);
+  <span class="var">Serial</span>.<span class="fn">println</span>(<span class="str">"=== Smart Room Monitor v1.0 ==="</span>);
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="fn">delay</span>(<span class="num">2000</span>);
+
+  <span class="kw">float</span> <span class="var">temp</span>  = <span class="var">dht</span>.<span class="fn">readTemperature</span>();
+  <span class="kw">float</span> <span class="var">hum</span>   = <span class="var">dht</span>.<span class="fn">readHumidity</span>();
+  <span class="kw">int</span>   <span class="var">light</span> = <span class="fn">analogRead</span>(<span class="pp">LDR_PIN</span>);
+  <span class="kw">long</span>  <span class="var">dist</span>  = <span class="fn">getDistance</span>();
+
+  <span class="var">Serial</span>.<span class="fn">println</span>(<span class="str">"+--------------------------+"</span>);
+  <span class="var">Serial</span>.<span class="fn">print</span>(<span class="str">"| Temp:     "</span>); <span class="var">Serial</span>.<span class="fn">print</span>(<span class="var">temp</span>);  <span class="var">Serial</span>.<span class="fn">println</span>(<span class="str">" C"</span>);
+  <span class="var">Serial</span>.<span class="fn">print</span>(<span class="str">"| Humidity: "</span>); <span class="var">Serial</span>.<span class="fn">print</span>(<span class="var">hum</span>);   <span class="var">Serial</span>.<span class="fn">println</span>(<span class="str">" %"</span>);
+  <span class="var">Serial</span>.<span class="fn">print</span>(<span class="str">"| Light:    "</span>); <span class="var">Serial</span>.<span class="fn">println</span>(<span class="var">light</span>);
+  <span class="var">Serial</span>.<span class="fn">print</span>(<span class="str">"| Distance: "</span>); <span class="var">Serial</span>.<span class="fn">print</span>(<span class="var">dist</span>); <span class="var">Serial</span>.<span class="fn">println</span>(<span class="str">" cm"</span>);
+
+  <span class="cmt">// স্বয়ংক্রিয় সতর্কতা</span>
+  <span class="kw">if</span> (<span class="var">temp</span> &gt; <span class="num">35.0</span>)  <span class="var">Serial</span>.<span class="fn">println</span>(<span class="str">"| [!] HIGH TEMPERATURE!"</span>);
+  <span class="kw">if</span> (<span class="var">hum</span>  &gt; <span class="num">80.0</span>)  <span class="var">Serial</span>.<span class="fn">println</span>(<span class="str">"| [!] HIGH HUMIDITY!"</span>);
+  <span class="kw">if</span> (<span class="var">dist</span> &lt; <span class="num">15</span>)    <span class="var">Serial</span>.<span class="fn">println</span>(<span class="str">"| [!] OBJECT DETECTED!"</span>);
+  <span class="var">Serial</span>.<span class="fn">println</span>(<span class="str">"+--------------------------+"</span>);
+}</code></pre>
+    </div>
+
+    <div class="info-box green">
+      <div class="info-box-title">🚀 পরবর্তী ধাপ</div>
+      এই কোড ESP32-তে চালালে WiFi দিয়ে সব ডেটা সরাসরি ThingSpeak বা Firebase-এ পাঠানো যাবে।
+      সেটা নিয়ে পরবর্তী টিউটোরিয়ালে বিস্তারিত দেখাবো।
+    </div>
+  </div>
+
+  <!-- §7 Projects -->
+  <div class="section" id="s7">
+    <div class="section-header">
+      <div class="section-num">7</div>
+      <h2>৫টি Mini Project আইডিয়া</h2>
+    </div>
+
+    <p>এখন পর্যন্ত যা শিখলে তা দিয়ে এই প্রজেক্টগুলো বানাতে পারবে:</p>
+
+    <div class="projects-grid">
+      <div class="project-card">
+        <div class="project-num">PROJECT 01</div>
+        <h4>🌡️ ডিজিটাল থার্মোমিটার</h4>
+        <p>DHT11 দিয়ে তাপমাত্রা পড়ো এবং LCD-তে দেখাও।</p>
+      </div>
+      <div class="project-card">
+        <div class="project-num">PROJECT 02</div>
+        <h4>💡 অটো স্মার্ট লাইট</h4>
+        <p>LDR দিয়ে আলো সেন্স করে LED অটোমেটিক চালু/বন্ধ।</p>
+      </div>
+      <div class="project-card">
+        <div class="project-num">PROJECT 03</div>
+        <h4>🅿️ স্মার্ট পার্কিং সেন্সর</h4>
+        <p>HC-SR04 দিয়ে গাড়ির দূরত্ব মেপে buzzer বাজাও।</p>
+      </div>
+      <div class="project-card">
+        <div class="project-num">PROJECT 04</div>
+        <h4>🌿 প্ল্যান্ট মনিটর</h4>
+        <p>তাপমাত্রা ও আর্দ্রতা দেখে গাছের পরিচর্যার সংকেত দাও।</p>
+      </div>
+      <div class="project-card" style="grid-column: 1 / -1;">
+        <div class="project-num">PROJECT 05</div>
+        <h4>🏠 Smart Room Dashboard</h4>
+        <p>তিনটো সেন্সর একসাথে Serial Plotter-এ রিয়েলটাইম গ্রাফ দেখাও।</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- §8 Quiz -->
+  <div class="section" id="s8">
+    <div class="section-header">
+      <div class="section-num">8</div>
+      <h2>নিজেকে যাচাই করো</h2>
+    </div>
+
+    <div class="quiz-block" id="q1">
+      <div class="quiz-label">📝 Quiz · 1 / 3</div>
+      <div class="quiz-q">DHT11 দুটি রিডিংয়ের মাঝে কমপক্ষে কতটুকু বিরতি দরকার?</div>
+      <div class="quiz-opts">
+        <div class="quiz-opt" onclick="answer('q1','a',false)"><span class="opt-key">A</span> ৫০০ মিলিসেকেন্ড</div>
+        <div class="quiz-opt" onclick="answer('q1','b',true)"><span class="opt-key">B</span> ২০০০ মিলিসেকেন্ড (২ সেকেন্ড)</div>
+        <div class="quiz-opt" onclick="answer('q1','c',false)"><span class="opt-key">C</span> ১০ সেকেন্ড</div>
+        <div class="quiz-opt" onclick="answer('q1','d',false)"><span class="opt-key">D</span> কোনো বিরতি লাগে না</div>
+      </div>
+      <div class="quiz-result" id="q1-res"></div>
+    </div>
+
+    <div class="quiz-block" id="q2">
+      <div class="quiz-label">📝 Quiz · 2 / 3</div>
+      <div class="quiz-q">Arduino-তে <code>analogRead()</code> ফাংশন কোন রেঞ্জে মান রিটার্ন করে?</div>
+      <div class="quiz-opts">
+        <div class="quiz-opt" onclick="answer('q2','a',false)"><span class="opt-key">A</span> 0 থেকে 255</div>
+        <div class="quiz-opt" onclick="answer('q2','b',false)"><span class="opt-key">B</span> 0 থেকে 512</div>
+        <div class="quiz-opt" onclick="answer('q2','c',true)"><span class="opt-key">C</span> 0 থেকে 1023</div>
+        <div class="quiz-opt" onclick="answer('q2','d',false)"><span class="opt-key">D</span> 0 থেকে 5000</div>
+      </div>
+      <div class="quiz-result" id="q2-res"></div>
+    </div>
+
+    <div class="quiz-block" id="q3">
+      <div class="quiz-label">📝 Quiz · 3 / 3</div>
+      <div class="quiz-q">HC-SR04 সেন্সর কোন প্রযুক্তি ব্যবহার করে দূরত্ব মাপে?</div>
+      <div class="quiz-opts">
+        <div class="quiz-opt" onclick="answer('q3','a',false)"><span class="opt-key">A</span> ইনফ্রারেড রশ্মি</div>
+        <div class="quiz-opt" onclick="answer('q3','b',false)"><span class="opt-key">B</span> লেজার</div>
+        <div class="quiz-opt" onclick="answer('q3','c',true)"><span class="opt-key">C</span> আলট্রাসোনিক তরঙ্গ</div>
+        <div class="quiz-opt" onclick="answer('q3','d',false)"><span class="opt-key">D</span> রেডিও ওয়েভ</div>
+      </div>
+      <div class="quiz-result" id="q3-res"></div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="section" id="s9">
+    <div class="section-header">
+      <div class="section-num">9</div>
+      <h2>প্রশ্ন ও উত্তর</h2>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">DHT11 আর DHT22-এর মধ্যে পার্থক্য কী?</div>
+      <div class="faq-a">DHT22 আরও বেশি accurate — তাপমাত্রা রেঞ্জ -40 থেকে 80°C এবং রেজোলিউশন 0.1°C। DHT11 শুধু 0–50°C রেঞ্জে কাজ করে, কিন্তু দাম কম। বিগিনারদের জন্য DHT11 যথেষ্ট।</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">সেন্সর রিডিং কি ক্লাউডে পাঠানো যাবে?</div>
+      <div class="faq-a">হ্যাঁ। Arduino Uno-তে ESP8266 WiFi module যোগ করলে বা সরাসরি ESP32 ব্যবহার করলে ThingSpeak, Firebase, বা Blynk-এ ডেটা পাঠানো যাবে। পরবর্তী টিউটোরিয়ালে এটা দেখাবো।</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Arduino IDE কোথায় পাবো?</div>
+      <div class="faq-a">arduino.cc/en/software থেকে বিনামূল্যে ডাউনলোড করা যায়। Windows, Mac, Linux সব OS-এ চলে।</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">সার্কিট ভুল হলে Arduino নষ্ট হয়ে যাবে?</div>
+      <div class="faq-a">সাধারণত না। Arduino Uno-তে over-current protection আছে। তবে সরাসরি 5V বা 12V পিনে লাগানো থেকে সাবধান থাকো।</div>
+    </div>
+  </div>
+
+  <!-- Instructor -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">👨‍🏫</div>
+      <h2>Instructor</h2>
+    </div>
+    <div class="instructor">
+      <div class="instructor-avatar">👨‍💻</div>
+      <div>
+        <div class="instructor-name">Md. Anowar Hossain</div>
+        <div class="instructor-title">Founder & Principal Research Engineer, Jontro-Tantrik Lab</div>
+        <p style="font-size:14px;color:var(--muted);margin:0;">
+          M.Sc. in ETE from CUET. 10+ years of experience in embedded systems, IoT, and robotics.
+          Former Research Assistant at University of Maine (USA) and CUET. Trained hundreds of students
+          across Bangladesh in hands-on hardware development.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-block">
+    <h3>পরবর্তী ধাপে যেতে প্রস্তুত?</h3>
+    <p>ESP32 দিয়ে WiFi-এ ডেটা পাঠাও — IoT Sensor Series-এর পরবর্তী পর্বে।</p>
+    <div class="cta-btns">
+      <a class="btn-primary" href="https://wa.me/8801822265260?text=IoT Sensor Tutorial সম্পর্কে জানতে চাই">📱 WhatsApp-এ জিজ্ঞেস করো</a>
+      <a class="btn-outline" href="https://jontro-tantrik-lab.github.io/web/tutorials.html">← সব টিউটোরিয়াল</a>
+    </div>
+  </div>
+
+</main>
+
+<!-- ── SIDEBAR ── -->
+<aside class="sidebar">
+  <div class="sidebar-card">
+    <div class="sidebar-head">Contents</div>
+    <ul class="toc">
+      <li><a href="#s1">01 · IoT ও সেন্সর</a></li>
+      <li><a href="#s2">02 · উপকরণ</a></li>
+      <li><a href="#s3">03 · DHT11</a></li>
+      <li><a href="#s4">04 · LDR</a></li>
+      <li><a href="#s5">05 · HC-SR04</a></li>
+      <li><a href="#s6">06 · Combined Monitor</a></li>
+      <li><a href="#s7">07 · Mini Projects</a></li>
+      <li><a href="#s8">08 · Quiz</a></li>
+      <li><a href="#s9">09 · FAQ</a></li>
+    </ul>
+  </div>
+
+  <div class="sidebar-card">
+    <div class="sidebar-head">Prerequisites</div>
+    <ul class="prereq">
+      <li>Arduino IDE ইনস্টল করা</li>
+      <li>C/C++ বেসিক জ্ঞান</li>
+      <li>Breadboard ব্যবহার জানা</li>
+      <li>USB ক্যাবল দিয়ে Arduino সংযোগ</li>
+    </ul>
+  </div>
+
+  <div class="sidebar-card">
+    <div class="sidebar-head">Series Map</div>
+    <div class="series-nav">
+      <div class="series-item done"><div class="series-dot"></div>ESP32 & IoT Basics</div>
+      <div class="series-item current"><div class="series-dot"></div><strong>IoT Sensor Systems ← এখন</strong></div>
+      <div class="series-item"><div class="series-dot"></div>ESP32 + WiFi + Cloud</div>
+      <div class="series-item"><div class="series-dot"></div>MQTT Protocol</div>
+      <div class="series-item"><div class="series-dot"></div>IoT Dashboard</div>
+    </div>
+  </div>
+
+  <div class="sidebar-card">
+    <div class="sidebar-head">Hardware Available</div>
+    <div style="padding:14px 18px;">
+      <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">এই টিউটোরিয়ালের সব কম্পোনেন্ট Jontro-Tantrik Lab থেকে কেনা যায়।</p>
+      <a href="https://wa.me/8801822265260?text=IoT Sensor Starter Kit কিনতে চাই" class="btn-primary" style="display:flex;justify-content:center;font-size:13px;">
+        📦 Starter Kit অর্ডার করো
+      </a>
+    </div>
+  </div>
+</aside>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-copy">© 2016–2026 Jontro-Tantrik Lab. All rights reserved.</div>
+  <a class="footer-next" href="https://jontro-tantrik-lab.github.io/web/tutorial-esp32.html">
+    <div>
+      <div class="footer-next-label">Next Tutorial →</div>
+      <div class="footer-next-title">ESP32 + WiFi: ক্লাউডে ডেটা পাঠাও</div>
+    </div>
+  </a>
+</footer>
+
+<!-- WhatsApp Float -->
+<a class="wa-float" href="https://wa.me/8801822265260?text=Hello Jontro-Tantrik Lab! I'm interested in your tutorials." title="Contact on WhatsApp">💬</a>
+
+<script>
+  // Read progress
+  window.addEventListener('scroll', () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    document.getElementById('progress-bar').style.width = (window.scrollY / max * 100) + '%';
+  });
+
+  // TOC highlight
+  const sects = document.querySelectorAll('.section[id]');
+  const links = document.querySelectorAll('.toc a');
+  new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting)
+        links.forEach(l => l.parentElement.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id));
+    });
+  }, { rootMargin: '-25% 0px -65% 0px' }).observe && sects.forEach(s =>
+    new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting)
+          links.forEach(l => l.parentElement.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id));
+      });
+    }, { rootMargin: '-25% 0px -65% 0px' }).observe(s)
+  );
+
+  // Quiz
+  function answer(qid, key, correct) {
+    const block = document.getElementById(qid);
+    const opts  = block.querySelectorAll('.quiz-opt');
+    const res   = document.getElementById(qid + '-res');
+    opts.forEach(o => { o.style.pointerEvents = 'none'; o.onclick = null; });
+    const idx = ['a','b','c','d'].indexOf(key);
+    opts[idx].classList.add(correct ? 'correct' : 'wrong');
+    res.textContent = correct ? '✓ সঠিক! চমৎকার।' : '✗ ভুল হয়েছে। উপরে আবার পড়ে দেখো।';
+    res.className   = 'quiz-result show ' + (correct ? 'ok' : 'no');
+  }
+
+  // Copy code
+  function copyCode(btn) {
+    const pre = btn.closest('.code-wrap').querySelector('pre');
+    navigator.clipboard.writeText(pre.innerText).then(() => {
+      btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = 'Copy', 2000);
+    });
+  }
+</script>
+</body>
+</html>
